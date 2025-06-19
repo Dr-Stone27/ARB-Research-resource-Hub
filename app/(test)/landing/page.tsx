@@ -1,3 +1,6 @@
+"use client";
+
+import { DepartmentCarousel } from "@/components/department-carousel-alter";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -6,36 +9,52 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { SelectTrigger } from "@radix-ui/react-select";
-import { ArrowRight, Facebook, Linkedin, Twitter } from "lucide-react";
+import {
+  ArrowRight,
+  Facebook,
+  Filter,
+  Linkedin,
+  SearchIcon,
+  Twitter,
+} from "lucide-react";
 import Image from "next/image";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 
 const LandingPage = () => {
   return (
-    <div className="">
-      <TopNav />
-      <HeroSection />
+    <div>
+      <div className="bg-[url('/bg-watermark.png')] bg-no-repeat bg-cover">
+        <TopNav />
+        <HeroSection />
+      </div>
       <FeatureSection />
       <FeaturedResearchSection />
       <Slider />
       <ReseachHub />
       <LatestNewsSection />
-      <section className="bg-gradient-to-r px-20 grid grid-cols-2 my-10 from-[#21005D] to-[#4500C3]  mx-auto">
+      <section className="bg-gradient-to-r max-md:py-8 px-20 grid md:grid-cols-2 max-sm:mb-0 my-10 from-[#21005D] to-[#4500C3]  mx-auto">
         <div className="flex flex-col justify-center">
-          <h4 className="text-white text-7xl font-bold">
+          <h4 className="text-white max-sm:text-3xl max-sm:text-center text-7xl font-bold">
             Ready to Share your Research
           </h4>
-          <button className="bg-[#7200CC] w-fit px-4 py-2 rounded-lg mt-3 text-white">
+          <button className="bg-[#7200CC] max-md:mx-auto w-fit px-4 py-2 rounded-lg mt-3 text-white">
             Submit your work
           </button>
         </div>
-        <div>
+        <div className="relative hidden sm:block">
           <Image
             src="/man-with-book.png"
             alt="random"
             className="h-[30rem] w-full object-cover"
             width={1000}
             height={700}
+          />
+          <Image
+            src="/magnifying_glass_2.png"
+            alt="random"
+            className="object-cover  absolute right-0 bottom-0"
+            width={200}
+            height={300}
           />
         </div>
       </section>
@@ -48,17 +67,17 @@ const LandingPage = () => {
 const Footer = () => {
   return (
     <footer className="bg-[#F2F2F2]">
-      <div className="grid grid-cols-2 gap-0 p-8  px-[8rem] py-[8rem]">
+      <div className="grid justify-start grid-cols-1 md:grid-cols-2 max-md:gap-9 p-8 sm:px-[6rem] md:px-[8rem] py-[8rem]">
         <div>
-          <header className=" text-lg py-3 font-bold">
+          <header className=" md:text-lg py-3 font-bold">
             Research<span className="text-[#21005D]">HUB</span>
           </header>
-          <div className="max-w-[35rem]">
+          <div className="max-w-[35rem] md:text-lg">
             A platform dedicated to showcasing exceptional research projects,
             fostering collaboration, and advancing academic excellence.
           </div>
         </div>
-        <div className="flex justify-between">
+        <div className="flex flex-col max-md:gap-9 md:flex-row justify-between">
           <div className="space-y-4">
             <header className="font-bold">RESOURCES</header>
             <div>Browse Research</div>
@@ -81,9 +100,9 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="border-t border-black/10 py-3 flex justify-between px-14">
+      <div className="border-t border-black/10 py-3 sm:flex justify-between px-4 sm:px-8 md:px-14">
         <div>© 2025 ULES-ARB ResourceHUB. All rights reserved.</div>
-        <div className="flex gap-4">
+        <div className="flex gap-4 max-sm:justify-end">
           <Facebook />
           <Linkedin />
           <Twitter />
@@ -97,10 +116,10 @@ const LatestNewsSection = () => {
   return (
     <div className="container mx-auto p-8 my-6">
       <h2 className="text-4xl font-bold mb-6 text-center">Latest News</h2>
-      <p className="text-center">
+      <p className="text-center md:text-lg">
         Stay updated with the latest news and announcements from our community
       </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-6 mt-6 justify-items-center">
         {Array.from({ length: 6 }).map((_, index) => (
           <ThirdCard key={index} />
         ))}
@@ -113,10 +132,10 @@ const TopNav = () => {
   return (
     <nav className="p-4">
       <div className="container mx-auto flex justify-between border border-black/[0.1] py-3 rounded-xl items-center">
-        <div className=" text-lg font-bold">
+        <div className="md:text-lg font-bold">
           Resource<span className="text-[#21005D]">HUB</span>
         </div>
-        <div className="space-x-4">
+        <div className="space-x-4 hidden sm:block">
           <a href="/" className="">
             Browse
           </a>
@@ -147,10 +166,10 @@ const HeroSection = () => {
   return (
     <div>
       <div className="p-8 text-center">
-        <h1 className="text-6xl font-bold mb-4">
+        <h1 className="text-3xl md:text-6xl font-bold mb-4">
           Discover & Share <span>Research!</span>
         </h1>
-        <p className="text-lg mb-6 max-w-[40rem] mx-auto">
+        <p className="md:text-lg mb-6 max-w-[40rem] mx-auto">
           A platform dedicated to showcasing exceptional engineering research
           projects, fostering collaboration, and advancing academic excellence.
         </p>
@@ -163,12 +182,12 @@ const HeroSection = () => {
           </Button>
         </div>
       </div>
-      <div className="bg-[#F2F2F2] p-3 rounded-lg h-[40rem] mx-auto max-w-[80rem]">
+      <div className="bg-[#F2F2F2] max-sm:hidden overflow-hidden sm:p-5 rounded-3xl border-[4px] border-black/20 h-[30rem] sm:h-[40rem] mx-auto max-w-[80rem]">
         <Image
           src="/hero_image.png"
-          width={10000}
+          width={1000}
           height={800}
-          className="w-full"
+          className="w-full h-full object-cover object-left"
           alt="" /*fill={true} */
         />
       </div>
@@ -180,13 +199,13 @@ const FeatureSection = () => {
   return (
     <div className="container mx-auto">
       <div className="container mx-auto p-8 my-6">
-        <h2 className="text-4xl font-bold mb-6 text-center">Our Features</h2>
-        <p className="text-center">
+        <h2 className="text-3xl md:text-4xl font-bold mb-6 text-center">Our Features</h2>
+        <p className="text-center md:text-lg">
           Take a look at some of our core features that makes the platform easy
           to use
         </p>
       </div>
-      <div className="grid gap-3 grid-cols-[1fr_1fr_1.5fr] max-w-[80rem] mx-auto">
+      <div className="sm:grid gap-3 max-sm:space-y-4 w-full sm:grid-cols-[2] md:grid-cols-[1fr_1fr_1.3fr] mx-auto">
         <Div1 />
         <Div2 />
         <Div3 />
@@ -196,9 +215,12 @@ const FeatureSection = () => {
   );
 };
 
-const Badge = ({ children }: { children: ReactNode }) => {
+const Badge = ({ children, color }: { children: ReactNode; color: string }) => {
   return (
-    <span className="text-purple-700 border p-1 px-2 text-sm uppercase rounded-md border-black/[0.2]">
+    <span
+      style={{ color: color, borderColor: color }}
+      className={` border-opacity-10 border p-1 px-2 text-sm uppercase rounded-md border-black/[0.2]`}
+    >
       {children}
     </span>
   );
@@ -206,10 +228,10 @@ const Badge = ({ children }: { children: ReactNode }) => {
 
 const Div1 = () => {
   return (
-    <div className="grid grid-cols-[1fr_1fr] col-span-2 p-4 bg-[#F6EBFF] rounded-md">
+    <div className="grid sm:grid-cols-2 relative gap-8 col-span-2 p-9 bg-[#F6EBFF] rounded-2xl">
       <div>
-        <Badge>FILTER PAPERS</Badge>
-        <h4 className="text-3xl my-3">
+        <Badge color="#7200CC">FILTER PAPERS</Badge>
+        <h4 className="sm:text-2xl text-xl my-3">
           Find Research Papers easily with our Filter System
         </h4>
         <p className="">
@@ -217,8 +239,20 @@ const Div1 = () => {
           with our easy to use filter system
         </p>
       </div>
-      <div>
-        <div className="bg-white p-2 px-3 mb-2 rounded-md"> Find Research </div>
+      <div className="text-black/50">
+        <div className="bg-white p-2 px-3 mb-2 flex items-center justify-between rounded-md">
+          <div className="flex items-center gap-2">
+            <SearchIcon /> <span>Find Research</span>
+          </div>
+          <Filter className="h-5 w-5 text-black/50" />
+          <Image
+            src="/magnifying_glass.png"
+            alt="filter"
+            width={80}
+            height={80}
+            className="absolute max-sm:top-[14rem] right-1 top-5 "
+          />
+        </div>
         <ul className="p-2 rounded-md space-y-2 bg-white">
           <li>Trending this Week</li>
           <li>Latest Uploads</li>
@@ -231,25 +265,27 @@ const Div1 = () => {
 
 const Div2 = () => {
   return (
-    <div className=" bg-[#EBFFF2] p-4 rounded-md">
+    <div className="flex bg-[#EBFFF2] p-7 h-[fit] rounded-2xl">
       <div>
-        <Badge>milestone badges</Badge>
+        <div>
+          <Badge color="#00A63B">milestone badges</Badge>
+        </div>
+        <h4 className="sm:text-2xl text-xl my-2">Gamification and Milestones</h4>
+        <div>
+          <div className="py-3">
+            Celebrate milestones and collect badges for achieving various goals
+            and objectives
+          </div>
+        </div>
       </div>
-      <h4 className="text-3xl my-3">Gamification and Milestones</h4>
-      <div className="flex">
-        <div>
-          Celebrate milestones and collect badges for achieving various goals
-          and objectives
-        </div>
-        <div>
-          <Image
-            src="/trophy.png"
-            alt="trophy"
-            width={200}
-            height={200}
-            className="object-cover"
-          />
-        </div>
+      <div className="">
+        <Image
+          src="/trophy.png"
+          alt="trophy"
+          width={300}
+          height={290}
+          className="object-cover max-sm:top-[8.5rem] relative left-7 top-[5rem]"
+        />
       </div>
     </div>
   );
@@ -257,33 +293,37 @@ const Div2 = () => {
 
 const Div3 = () => {
   return (
-    <div className="p-4 rounded-md bg-[#FFEBEC]">
+    <div className="p-5 rounded-2xl bg-[#FFEBEC]">
       <Image src="/track_upload.png" width={500} height={200} alt="" />
-      <div className="pt-2">
-        <Badge>upload tracker</Badge>
+      <div className="pt-5 pb-4">
+        <Badge color="#DB000E">upload tracker</Badge>
       </div>
-      <h4 className="text-3xl my-3">Track Uploads Easily</h4>
+      <h4 className="sm:text-2xl text-xl my-3">Track Uploads Easily</h4>
     </div>
   );
 };
 
 const Div4 = () => {
   return (
-    <div className="bg-[#FDF4EC] row-start-1 row-end-3 col-start-3 p-4 rounded-md">
-      <div className="h-[15rem] w-[20rem]">
+    <div className="bg-[#FDF4EC] sm:row-start-1 sm:row-end-3  sm:col-start-3 p-9 flex flex-col justify-between rounded-2xl">
+      <div className="h-[15rem]">
         <Image
           src="/choose_a_file.png"
           width={500}
           height={200}
           alt="upload papers"
-          className="object-cover"
+          className="object-cover w-full"
         />
       </div>
-      <Badge>upload papers</Badge>
-      <h4 className="text-3xl my-3">Upload your Final Year Research Papers</h4>
       <div>
-        Make use of our platform to upload and publish your final year project
-        manuscripts to aid learning for your predecessors
+        <Badge color="#EB801D">upload papers</Badge>
+        <h4 className="text-2xl my-3">
+          Upload your Final Year Research Papers
+        </h4>
+        <div>
+          Make use of our platform to upload and publish your final year project
+          manuscripts to aid learning for your predecessors
+        </div>
       </div>
     </div>
   );
@@ -291,7 +331,7 @@ const Div4 = () => {
 
 const Tag = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="p-0.5 px-2 w-fit bg-[#FFE5E7] text-[#DB000E] border rounded-md border-[#FFCCCF]">
+    <div className="p-0.5 px-2 w-fit bg-[#FFE5E7] text-[#DB000E] text-sm border rounded-md border-[#FFCCCF]">
       {children}
     </div>
   );
@@ -403,13 +443,13 @@ const MultipleImages = () => {
 
 const FeaturedResearchSection = () => {
   return (
-    <div className="py-6 max-w-[80rem] mx-auto">
+    <div className="py-6 max-w-[80rem] px-4 mx-auto">
       <h2 className="text-4xl font-bold mb-4 text-center">Featured Research</h2>
-      <p className="text-center">
+      <p className="text-center md:text-lg">
         Explore research across our 10 engineering departments
       </p>
       <CircularTab />
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6  ">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
         {Array.from({ length: 6 }).map((_, index) => (
           <FirstCard key={index} />
         ))}
@@ -424,17 +464,40 @@ const FeaturedResearchSection = () => {
 };
 
 const CircularTab = () => {
+  const [selectedTab, setSelectedTab] = useState("All");
   return (
     <nav>
-      <div className="flex justify-center space-x-4 p-1 border text-white rounded-full w-fit mx-auto border-black/10 my-5">
-        <button className="px-5 py-1 rounded-full bg-blue-500">All</button>
-        <button className="px-5 py-1 rounded-full text-black">
+      <div className="flex justify-center space-x-4 p-1 gap-y-3  max-[450px]:flex-wrap min-[450px]:border text-white rounded-full w-fit mx-auto border-black/10 my-5">
+        <button
+          className={`px-5 py-1 rounded-full max-[450px]:shadow ${
+            selectedTab === "All" ? "bg-blue-500" : "text-black"
+          }`}
+          onClick={() => setSelectedTab("All")}
+        >
+          All
+        </button>
+        <button
+          className={`px-5 py-1 rounded-full max-[450px]:shadow ${
+            selectedTab === "Experimental" ? "bg-blue-500" : "text-black"
+          }`}
+          onClick={() => setSelectedTab("Experimental")}
+        >
           Experimental
         </button>
-        <button className="px-5 py-1 rounded-full text-black">
+        <button
+          className={`px-5 py-1 rounded-full max-[450px]:shadow ${
+            selectedTab === "Analytical" ? "bg-blue-500" : "text-black"
+          }`}
+          onClick={() => setSelectedTab("Analytical")}
+        >
           Analytical
         </button>
-        <button className="px-5 py-1 rounded-full text-black">
+        <button
+          className={`px-5 py-1 rounded-full max-[450px]:shadow ${
+            selectedTab === "Additional" ? "bg-blue-500" : "text-black"
+          }`}
+          onClick={() => setSelectedTab("Additional")}
+        >
           Additional
         </button>
       </div>
@@ -454,7 +517,7 @@ const Slider = () => {
         </p>
       </div>
 
-      <div className="h-[20rem] w-full bg-slate-300"></div>
+      <DepartmentCarousel />
     </div>
   );
 };
@@ -463,7 +526,7 @@ const ReseachHub = () => {
   return (
     <section className="container max-w-[80rem] mx-auto p-8 my-6">
       <h2 className="text-4xl font-bold mb-4 text-center">Resource Hub</h2>
-      <p className="text-center text-black/10">
+      <p className="text-center text-black/60">
         Access curated research resources to enhance your academic journey
       </p>
 
@@ -482,7 +545,7 @@ const ReseachHub = () => {
           </SelectContent>
         </Select>
       </div>
-      <div className="grid gap-3 grid-cols-[1fr_1fr_1fr]">
+      <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-[1fr_1fr_1fr] justify-items-center">
         {Array.from({ length: 6 }).map((_, index) => (
           <SecondCard key={index} />
         ))}
