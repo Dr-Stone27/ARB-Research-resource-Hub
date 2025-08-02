@@ -21,7 +21,7 @@ export function NewsCard({ news }: NewsCardProps) {
     <Card className="overflow-hidden transition-all duration-300 hover:shadow-[0_0_20px_rgba(79,70,229,0.3)] hover:scale-[1.02] bg-[#1c1c2b]/80 backdrop-blur-sm border-gray-800 rounded-2xl h-full flex flex-col">
       <div className="aspect-video w-full overflow-hidden bg-[#151525]">
         <img
-          src={news.image || "/placeholder.svg"}
+          src={news.image || "/images/placeholder.svg"}
           alt={news.title}
           className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
         />

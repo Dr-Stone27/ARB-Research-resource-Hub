@@ -1,296 +1,409 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { ArrowRight, Search } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { DepartmentCarousel } from '@/components/department-carousel';
-import { FeaturedCategories } from '@/components/featured-categories';
+import { DepartmentCarousel } from "@/components/department-carousel-alter";
 import {
-  ResearchCard,
-  type ResearchPaper,
-  type ResearchCategory,
-} from '@/components/research-card';
-import { NewsSection } from '@/components/news-section';
-import { ResourceHub } from '@/components/resource-hub';
-import { Resource } from '@/components/resource-card';
+  ArrowRight,
+  ChevronDown,
+  Menu,
+  X,
+} from "lucide-react";
+import Image from "next/image";
+import React, { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 
-// Sample research papers data
-const researchPapers: ResearchPaper[] = [
-  {
-    id: '1',
-    title: 'Quantum Computing Applications in Cryptography',
-    author: 'Alex Johnson',
-    abstract:
-      "This research explores the potential applications of quantum computing in modern cryptographic systems. As quantum computers continue to advance, traditional encryption methods face unprecedented challenges. This paper presents a comprehensive analysis of how quantum algorithms, particularly Shor's algorithm, threaten current public-key cryptography and proposes several quantum-resistant alternatives.",
-    category: 'analytical',
-    tags: ['Quantum Computing', 'Cryptography', 'Security'],
-    date: 'May 2023',
-    downloads: 342,
-    department: 'Computer Science',
-  },
-  {
-    id: '2',
-    title: 'Climate Change Impact on Coastal Ecosystems',
-    author: 'Maria Rodriguez',
-    abstract:
-      'A comprehensive analysis of how rising sea levels affect biodiversity in coastal regions. This study combines field observations with advanced climate models to predict ecosystem changes over the next century.',
-    category: 'experimental',
-    tags: ['Climate Change', 'Ecosystems', 'Environmental Science'],
-    date: 'June 2023',
-    downloads: 287,
-    department: 'Environmental Science',
-  },
-  {
-    id: '3',
-    title: 'Neural Networks for Early Disease Detection',
-    author: 'Priya Patel',
-    abstract:
-      'Investigating the application of deep learning algorithms in identifying early markers of neurodegenerative diseases. This research demonstrates how convolutional neural networks can detect subtle patterns in medical imaging that often escape human observation.',
-    category: 'simulation',
-    tags: ['Neural Networks', 'Healthcare', 'AI'],
-    date: 'July 2023',
-    downloads: 423,
-    department: 'Biomedical Engineering',
-  },
-  {
-    id: '4',
-    title: 'Economic Impacts of Remote Work Policies',
-    author: 'David Chen',
-    abstract:
-      'An analysis of how the shift to remote work has affected urban economies and commercial real estate markets. This paper examines data from major metropolitan areas before and after the pandemic to identify emerging economic trends.',
-    category: 'analytical',
-    tags: ['Economics', 'Remote Work', 'Urban Planning'],
-    date: 'March 2023',
-    downloads: 198,
-    department: 'Economics',
-  },
-  {
-    id: '5',
-    title: 'Sustainable Architecture in Urban Planning',
-    author: 'Sophia Kim',
-    abstract:
-      'Exploring innovative approaches to integrating sustainable design principles in high-density urban environments. This research presents case studies of successful green building projects and their impact on energy consumption and quality of life.',
-    category: 'experimental',
-    tags: ['Architecture', 'Sustainability', 'Urban Design'],
-    date: 'May 2023',
-    downloads: 231,
-    department: 'Architecture',
-  },
-  {
-    id: '6',
-    title: 'Machine Learning Approaches to Climate Prediction',
-    author: 'James Wilson',
-    abstract:
-      'This paper examines how machine learning algorithms can improve the accuracy of climate models. By analyzing historical weather data and atmospheric patterns, we demonstrate a 15% improvement in prediction accuracy compared to traditional methods.',
-    category: 'simulation',
-    tags: ['Machine Learning', 'Climate Science', 'Data Analysis'],
-    date: 'April 2023',
-    downloads: 156,
-    department: 'Computer Science',
-  },
-];
+export default function LandingPage() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const [researchTab, setResearchTab] = useState("All");
+  const researchTabs = ["All", "Experimental", "Analytical", "Additional"]
 
-// Sample news data
-const newsItems = [
-  {
-    id: '1',
-    title: 'Annual Undergraduate Research Symposium',
-    date: 'August 15, 2023',
-    content:
-      'Registration is now open for our annual symposium showcasing exceptional undergraduate research projects across all disciplines. Join us for three days of presentations, workshops, and networking opportunities.',
-    image: '/placeholder.svg?height=200&width=400',
-    url: '/news/symposium',
-  },
-  {
-    id: '2',
-    title: 'New Research Grant Opportunities',
-    date: 'July 28, 2023',
-    content:
-      'The National Science Foundation has announced new grant opportunities specifically for undergraduate researchers in STEM fields. Applications are due by September 30th with funding starting in January.',
-    image: '/placeholder.svg?height=200&width=400',
-    url: '/news/grants',
-  },
-  {
-    id: '3',
-    title: 'Research Mentorship Program Launch',
-    date: 'July 10, 2023',
-    content:
-      'Our new mentorship program connecting undergraduate researchers with industry professionals and academic experts is now accepting applications. The program runs for 6 months with weekly mentoring sessions.',
-    image: '/placeholder.svg?height=200&width=400',
-    url: '/news/mentorship',
-  },
-];
+  const getResearchTabPosition = () => {
+    const tabIndex = researchTabs.indexOf(researchTab);
+    return tabIndex * 100;
+  }
 
-// Sample resources data
-const resourceItems: Resource[] = [
-  {
-    id: '1',
-    title: 'Guide to Writing Research Papers',
-    type: 'pdf',
-    summary:
-      'A comprehensive guide to writing effective research papers, including formatting, citation styles, and best practices for academic writing.',
-    tags: ['Writing', 'Research Methods', 'Academic'],
-    url: '/resources/writing-guide.pdf',
-    date: 'June 2023',
-  },
-  {
-    id: '2',
-    title: 'Introduction to Statistical Analysis',
-    type: 'video',
-    summary:
-      'A video tutorial series covering the basics of statistical analysis for research, including hypothesis testing, regression analysis, and data visualization.',
-    tags: ['Statistics', 'Data Analysis', 'Research Methods'],
-    url: '/resources/statistics-tutorial',
-    date: 'May 2023',
-  },
-  {
-    id: '3',
-    title: 'Research Ethics Framework',
-    type: 'guide',
-    summary:
-      'A comprehensive framework for ethical considerations in research, including informed consent, data privacy, and responsible reporting.',
-    tags: ['Ethics', 'Research Methods', 'Guidelines'],
-    url: '/resources/ethics-framework',
-    date: 'July 2023',
-  },
-  {
-    id: '4',
-    title: 'Open Access Research Repositories',
-    type: 'link',
-    summary:
-      'A curated list of open access repositories where you can find and share research papers across various disciplines.',
-    tags: ['Open Access', 'Publishing', 'Resources'],
-    url: '/resources/repositories',
-    date: 'April 2023',
-  },
-  {
-    id: '5',
-    title: 'Data Visualization Techniques',
-    type: 'pdf',
-    summary:
-      'Learn how to create effective data visualizations for your research papers, including chart selection, color theory, and accessibility considerations.',
-    tags: ['Data Visualization', 'Graphics', 'Presentation'],
-    url: '/resources/data-viz.pdf',
-    date: 'March 2023',
-  },
-  {
-    id: '6',
-    title: 'Funding Opportunities for Undergraduate Research',
-    type: 'guide',
-    summary:
-      'A comprehensive guide to finding and applying for research funding as an undergraduate student, including grants, scholarships, and fellowships.',
-    tags: ['Funding', 'Grants', 'Opportunities'],
-    url: '/resources/funding-guide',
-    date: 'June 2023',
-  },
-];
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        isMobileMenuOpen &&
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target as Node) &&
+        menuButtonRef.current &&
+        !menuButtonRef.current.contains(event.target as Node)
+      ) {
+        setIsMobileMenuOpen(false);
+      }
+    };
 
-export default function Home() {
-  const [activeCategory, setActiveCategory] = useState<
-    ResearchCategory | 'all'
-  >('all');
-
-  // Filter research papers based on active category
-  const filteredPapers =
-    activeCategory === 'all'
-      ? researchPapers
-      : researchPapers.filter((paper) => paper.category === activeCategory);
-
-  // Handle tag click
-  const handleTagClick = (tag: string) => {
-    console.log(`Tag clicked: ${tag}`);
-    // Here you would typically filter by tag or navigate to a tag page
-  };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMobileMenuOpen]);
 
   return (
-    <div className='flex min-h-screen flex-col bg-[#0f0f1a]'>
-      {/* Hero Section */}
-      <section className='w-full py-16 md:py-24 lg:py-32 bg-gradient-to-b from-[#121220] to-[#0f0f1a]'>
-        <div className='container mx-auto px-4 sm:px-6 max-w-7xl'>
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-12 items-center'>
-            <div className='flex flex-col space-y-6'>
-              <div>
-                <h1 className='text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl text-white'>
-                  Discover and Share Research
-                </h1>
-                <p className='mt-4 text-lg text-gray-400 max-w-xl'>
-                  A platform dedicated to showcasing exceptional engineering
-                  research projects, fostering collaboration, and advancing
-                  academic excellence.
-                </p>
-              </div>
-              <div className='flex flex-col sm:flex-row gap-4'>
-                <Button
-                  size='lg'
-                  className='border-2 border-indigo-500 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white rounded-xl px-6 py-3 h-auto'
-                  asChild
-                >
-                  <Link href='/browse'>
-                    Browse Research <ArrowRight className='ml-2 h-4 w-4' />
-                  </Link>
-                </Button>
-                <Button
-                  size='lg'
-                  variant='outline'
-                  className='border-2 border-indigo-500 text-gray-300 hover:bg-indigo-600 hover:text-white rounded-xl px-6 py-3 h-auto'
-                  asChild
-                >
-                  <Link href='/submit'>Submit Your Work</Link>
-                </Button>
-              </div>
-              <div className='relative max-w-md mt-4'>
-                <Search className='absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500' />
-                <Input
-                  type='search'
-                  placeholder='Search for research topics...'
-                  className='pl-10 h-12 rounded-full bg-[#1c1c2b] border-gray-700 text-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
-                />
-              </div>
+    <div className="bg-[url('/images/bg-watermark.png')] bg-no-repeat bg-contain">
+      {/* Top Nav */}
+      <section className="p-4 sticky top-5 z-50">
+        <div className="container mx-auto flex justify-between shadow-sm py-3 rounded-full items-center bg-white">
+          <Link
+          href="/"
+          className="md:text-xl font-bold transition ease-in-out duration-300 hover:opacity-80"
+          aria-label="ResearchHub Home"
+          >
+            Resource<span className="text-magenta">HUB</span>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center gap-6">
+            <Link href="/browse" className="hover:text-magenta opacity-60 transition-colors">
+              Browse
+            </Link>
+            <Link href="/submit" className="hover:text-magenta opacity-60 transition-colors">
+              Submit
+            </Link>
+            <Link href="/about" className="hover:text-magenta opacity-60 transition-colors">
+              About
+            </Link>
+            <Link href="/news" className="hover:text-magenta opacity-60 transition-colors">
+              News
+            </Link>
+          </nav>
+
+          {/* Desktop Auth Buttons */}
+          <div className="hidden md:flex items-center gap-4">
+            <Link
+              href="/auth/login"
+              className="px-4 py-2 rounded-xl text-magenta border-[1.5px] border-gray-200 shadow-[inset_0_-2px_8px_rgba(0,0,0,0.08)] hover:opacity-80 transition-opacity duration-300"
+            >
+              Login
+            </Link>
+            <Link
+              href="/auth/login"
+              className="px-4 py-2 rounded-xl bg-magenta text-white shadow-[inset_0_-2px_4px_rgba(255,255,255,0.35)] drop-shadow-[inset_0_2px_8px_rgba(33,0,93,0.2)] flex items-center gap-2 hover:opacity-80 transition-opacity duration-300"
+            >
+              <span>Sign Up</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            ref={menuButtonRef}
+            className="md:hidden rounded-lg hover:text-magenta hover:opacity-80 transition-all duration-300"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle mobile menu"
+          >
+            {isMobileMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </button>
+        </div>
+
+        {/* Mobile Navigation Dropdown */}
+        {isMobileMenuOpen && (
+          <div 
+            ref={mobileMenuRef}
+            className="md:hidden mt-2 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden"
+          >
+            <nav className="flex flex-col py-4 px-8">
+              <Link 
+                href="/browse" 
+                className="py-3 hover:bg-gray-50 transition-colors hover:text-magenta"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Browse
+              </Link>
+              <Link 
+                href="/submit" 
+                className="py-3 hover:bg-gray-50 transition-colors hover:text-magenta"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Submit
+              </Link>
+              <Link 
+                href="/about" 
+                className="py-3 hover:bg-gray-50 transition-colors hover:text-magenta"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                About
+              </Link>
+              <Link 
+                href="/news" 
+                className="py-3 hover:bg-gray-50 transition-colors hover:text-magenta"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                News
+              </Link>
+            </nav>
+            <div className="border-t border-gray-100 px-6 py-4 space-y-4">
+              <Link
+                href="/auth/login"
+                className="w-fit text-center px-4 py-2 rounded-xl text-magenta border-[1.5px] border-gray-200 shadow-[inset_0_-2px_8px_rgba(0,0,0,0.08)] hover:opacity-80 transition-opacity duration-300"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Login
+              </Link>
+              <Link
+                href="/auth/login"
+                className="w-fit text-center px-4 py-2 rounded-xl bg-magenta text-white shadow-[inset_0_-2px_4px_rgba(255,255,255,0.35)] drop-shadow-[inset_0_2px_8px_rgba(33,0,93,0.2)] flex items-center justify-center gap-2 hover:opacity-80 transition-opacity duration-300"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <span>Sign Up</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
-            <div className='hidden md:flex justify-center'>
-              <div className='relative w-full max-w-md aspect-square'>
-                <div className='absolute inset-0 rounded-full bg-gradient-to-r from-indigo-500/20 to-purple-500/20 opacity-70 animate-pulse'></div>
-                <div className='absolute inset-4 rounded-full bg-[#1c1c2b] shadow-[0_0_15px_rgba(79,70,229,0.3)] flex items-center justify-center'>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    viewBox='0 0 24 24'
-                    fill='none'
-                    stroke='url(#gradient)'
-                    strokeWidth='1.5'
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    className='h-24 w-24'
-                  >
-                    <defs>
-                      <linearGradient
-                        id='gradient'
-                        x1='0%'
-                        y1='0%'
-                        x2='100%'
-                        y2='100%'
-                      >
-                        <stop offset='0%' stopColor='#4f46e5' />
-                        <stop offset='100%' stopColor='#8b5cf6' />
-                      </linearGradient>
-                    </defs>
-                    <path d='M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20' />
-                  </svg>
-                </div>
-              </div>
+          </div>
+        )}
+      </section>
+
+      {/* Hero Section */}
+      <section className="my-12 px-8">
+        <div className="text-center max-w-[40rem] mx-auto flex flex-col items-center gap-4">
+          <h1 className="text-4xl md:text-7xl font-black font-schibstedGrotesk">
+            <span>Discover & Share</span>
+            <span className="block bg-gradient-to-r from-[rgba(33,0,93,1)] via-[rgba(33,0,93,1)] to-[rgba(114,0,204,1)] text-transparent bg-clip-text">Research!</span>
+          </h1>
+          <p className="md:text-lg mx-auto text-gray-400">
+            A platform dedicated to showcasing exceptional engineering research
+            projects, fostering collaboration, and advancing academic excellence.
+          </p>
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            <Link
+              href="/auth/login"
+              className="px-4 py-1.5 rounded-xl bg-magenta text-white shadow-[inset_0_-2px_4px_rgba(255,255,255,0.35)] drop-shadow-[inset_0_2px_8px_rgba(33,0,93,0.2)] flex items-center gap-2 hover:opacity-80 transition-opacity duration-300"
+            >
+              <span>Browse Research</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href="/auth/login"
+              className="px-4 py-1.5 rounded-xl text-magenta border-[1.5px] bg-white border-gray-200 shadow-[inset_0_-2px_8px_rgba(0,0,0,0.08)] hover:opacity-80 transition-opacity duration-300"
+            >
+              Submit your work
+            </Link>
+          </div>
+        </div>
+        <div className="mt-12 max-sm:hidden overflow-hidden rounded-3xl h-fit mx-auto max-w-[80rem]">
+          <Image
+            src="/images/hero_image.svg"
+            width={1200}
+            height={400}
+            className="w-full object-cover object-center"
+            alt="hero image"
+          />
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="mx-auto bg-magenta/5 px-4 py-10 md:py-20">
+        <div className="mx-auto mb-6 text-center space-y-3">
+          <h1 className="text-2xl md:text-5xl font-bold">
+            Our Features
+          </h1>
+          <p className="text-center md:text-lg text-gray-400">
+            Take a look at some of our core features that makes the platform easy
+            to use
+          </p>
+        </div>
+
+        {/* Features Grid */}
+        <div className="sm:grid gap-6 max-sm:space-y-4 w-full sm:grid-cols-[2] md:grid-cols-[1fr_1fr_1.3fr] mx-auto max-w-[80rem]">
+          {/* Filter Papers */}
+          <div className="grid sm:grid-cols-2 relative gap-8 col-span-2 p-9 bg-[#F6EBFF] rounded-2xl overflow-hidden">
+            <div className="order-1 md:order-2">
+              <Image
+                src="/features/search-filter.svg"
+                alt="filter"
+                width={80}
+                height={80}
+                className="w-full"
+              />
+            </div>
+            <div className="order-2 md:order-1">
+              <div className="px-2 py-1 border border-magenta w-fit text-sm rounded-lg">FILTER PAPERS</div>
+              <h4 className="text-xl md:text-2xl my-3">
+                Find research papers easily with our filter system
+              </h4>
+              <p className="text-gray-400">
+                Find research papers easily based on your interests and field of study
+                with our easy to use filter system
+              </p>
+            </div>
+          </div>
+
+          {/* Milestone Badges */}
+          <div className="flex flex-col md:grid sm:grid-cols-3 relative gap-8 col-span-1 p-9 bg-[#EBFFF2] rounded-2xl overflow-hidden">
+            <div className="order-1 md:order-2 col-span-full md:col-span-1 flex flex-col justify-end">
+              <Image
+                src="/features/trophy.svg"
+                alt="filter"
+                width={150}
+                height={150}
+                className="max-sm:w-1/3 mx-auto md:scale-[2]"
+              />
+            </div>
+            <div className="order-2 md:order-1 col-span-2 md:col-span-2">
+              <div className="px-2 py-1 border border-[#00A63B] text-[#00A63B] w-fit text-sm rounded-lg">MILESTONE BADGES</div>
+              <h4 className="text-xl md:text-2xl my-3">
+                Gamification and Milestones
+              </h4>
+              <p className="text-gray-400">
+                Celebrate milestones and collect badges for achieving various goals
+                and objectives
+              </p>
+            </div>
+          </div>
+
+          {/* Upload Tracker */}
+          <div className="space-y-6 relative col-span-1 p-9 bg-[#FFEBEC] rounded-2xl overflow-hidden">
+            <div>
+              <Image
+                src="/features/file-upload.svg"
+                alt="filter"
+                width={500}
+                height={200}
+                className="w-full"
+              />
+            </div>
+            <div className="space-y-2">
+              <div className="px-2 py-1 border border-[#DB000E] text-[#DB000E] w-fit text-sm rounded-lg">UPLOAD TRACKER</div>
+              <h4 className="text-xl md:text-2xl my-3">
+                Track Uploads Easily
+              </h4>
+              <p className="text-gray-400">
+                Celebrate milestones and collect badges for achieving various goals
+                and objectives
+              </p>
+            </div>
+          </div>
+
+          {/* Upload Papers */}
+          <div className="bg-[#FDF4EC] sm:row-start-1 sm:row-end-3 sm:col-start-3 p-9 flex flex-col justify-between rounded-2xl">
+            <div className="h-[15rem]">
+              <Image
+                src="/features/upload-papers.svg"
+                width={500}
+                height={200}
+                alt="upload papers"
+                className="object-cover w-full"
+              />
+            </div>
+            <div className="space-y-2">
+              <div className="px-2 py-1 border border-[#EB801D] text-[#EB801D] w-fit text-sm rounded-lg">UPLOAD PAPERS</div>
+              <h4 className="text-xl md:text-2xl my-3">
+                Upload your Final Year Research Papers
+              </h4>
+              <p className="text-gray-400 mt-6">
+                Make use of our platform to upload and publish your final year project
+                manuscripts to aid learning for your predecessors
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Faculty Departments Section */}
-      <section className='w-full bg-[#0f0f1a] border-t border-gray-800'>
-        <div className='text-center pt-16 pb-8'>
-          <h2 className='text-3xl font-bold tracking-tight text-white'>
-            Faculty of Engineering
-          </h2>
-          <p className='mt-4 text-lg text-gray-400 max-w-2xl mx-auto'>
+      {/* Featured Research Section */}
+      <section className="max-w-[80rem] px-8 mx-auto py-10 md:py-20">
+        <div className="mx-auto mb-6 text-center space-y-3">
+          <h1 className="text-2xl md:text-5xl font-bold">
+            Featured Research
+          </h1>
+          <p className="text-center md:text-lg text-gray-400">
+            Explore research across our 10 engineering departments
+          </p>
+        </div>
+        <nav className="relative grid grid-cols-4 gap-1 p-1 border rounded-full w-fit mx-auto border-gray-200 my-5 bg-white">
+          {/* Animated Background */}
+          <div 
+            className="absolute top-1 left-1 h-[calc(100%-0.5rem)] bg-magenta rounded-full transition-all duration-300 ease-in-out"
+            style={{ 
+              width: 'calc(25% - 0.125rem)',
+              transform: `translateX(${getResearchTabPosition()}%)`
+            }}
+          />
+          
+          {researchTabs.map((tab, index) => (
+            <button
+              key={index}
+              className={`relative px-5 py-2 rounded-full transition-colors duration-300 text-[10px] md:text-sm flex items-center justify-center ${
+                researchTab === tab ? "text-white" : "text-gray-400 hover:text-magenta"
+              }`}
+              onClick={() => setResearchTab(tab)}
+            >
+              {tab}
+            </button>          
+          ))}
+        </nav>
+
+        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <div key={index} className="p-3 px-6 border border-black/[0.1] max-w-[32rem] rounded-lg space-y-5">
+              <div className="flex gap-2 items-center flex-wrap text-[10px]">
+                <div className="p-0.5 px-2 bg-[#E5FFEF] text-[#00A63B] border rounded-md border-[#CCFFDE]">
+                  #civileng
+                </div>
+                <div className="p-0.5 px-2 bg-[#FFE5E7] text-[#DB000E] border rounded-md border-[#FFCCCF]">
+                  #structures
+                </div>
+                <div className="p-0.5 px-2 bg-[#FDF2E8] text-[#EB801D] border rounded-md border-[#FBE5D0]">
+                  #materials
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold line-clamp-1">Effects of Water Quality on Compressive Strength</h4>
+                <p className="py-2 text-gray-400 text-sm">
+                  This Paper explores the various effects water quality may have on the
+                  compressive strength of cement based mortar.
+                </p>
+                <div className="flex gap-3 items-center py-2 text-sm">
+                  <div className="flex gap-1">
+                    <Image src="/users/user 1.svg" alt="user" width={25} height={25} />
+                    <Image
+                      src="/users/user 2.svg"
+                      className="-ml-1"
+                      alt="user"
+                      width={25}
+                      height={25}
+                    />
+                    <Image
+                      src="/users/user 3.svg"
+                      className="-ml-1"
+                      alt="user"
+                      width={25}
+                      height={25}
+                    />
+                  </div>
+                  <span>Dr. A. Adeokun, et. al.</span>
+                </div>
+              </div>
+              <div className="flex justify-between">
+                <span>256 downloads</span>
+                <span className="text-magenta">View Paper</span>
+              </div>
+            </div>
+          ))}
+        </section>
+        <div className="text-right mt-4">
+          <Link
+            href="/browse"
+            className="px-4 py-1 rounded-lg text-magenta border-[1.5px] bg-white border-gray-200 shadow-[inset_0_-2px_8px_rgba(0,0,0,0.08)] hover:opacity-80 transition-opacity duration-300"
+          >
+            View All Research
+          </Link>
+        </div>
+      </section>
+
+      {/* Department Carousel Section */}
+      <section className="py-10 md:py-20">
+        <div className="mx-auto mb-6 text-center space-y-3">
+          <h1 className="text-2xl md:text-5xl font-bold">
+            Faculty Of Engineering
+          </h1>
+          <p className="text-center md:text-lg text-gray-400">
             Explore research across our 10 engineering departments
           </p>
         </div>
@@ -298,375 +411,218 @@ export default function Home() {
         <DepartmentCarousel />
       </section>
 
-      {/* Featured Research Section */}
-      <section className='w-full py-16 md:py-24 bg-[#121220] border-t border-gray-800'>
-        <div className='container mx-auto px-4 sm:px-6 max-w-7xl'>
-          <div className='flex flex-col items-center justify-center space-y-4 text-center mb-12'>
-            <div className='space-y-2 max-w-3xl'>
-              <h2 className='text-3xl font-bold tracking-tight md:text-4xl text-white'>
-                Featured Research
-              </h2>
-              <p className='text-lg text-gray-400'>
-                Explore groundbreaking engineering research across various
-                disciplines
-              </p>
-            </div>
-          </div>
-
-          <FeaturedCategories
-            activeCategory={activeCategory}
-            onCategoryChange={(category) => setActiveCategory(category)}
-          />
-
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-            {filteredPapers.map((paper) => (
-              <ResearchCard
-                key={paper.id}
-                paper={paper}
-                onTagClick={handleTagClick}
-              />
-            ))}
-          </div>
-
-          <div className='flex justify-center mt-10'>
-            <Button
-              variant='outline'
-              className='mx-auto border-2 border-indigo-500 text-gray-300 hover:bg-indigo-600 hover:text-white rounded-xl px-6 py-3 h-auto'
-              asChild
-            >
-              <Link href='/browse'>View All Research</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* News Section */}
-      <NewsSection
-        title='Latest News'
-        description='Stay updated with the latest events, opportunities, and achievements in research'
-        news={newsItems}
-        viewAllUrl='/news'
-      />
-
       {/* Resource Hub Section */}
-      <ResourceHub
-        title='Resource Hub'
-        description='Access curated research resources to enhance your academic journey'
-        resources={resourceItems}
-        viewAllUrl='/resources'
-      />
+      <section className="mx-auto px-8 py-10 md:py-20 bg-magenta/5">
+        <div className="mx-auto mb-6 text-center space-y-3">
+          <h1 className="text-2xl md:text-5xl font-bold">
+            Resource Hub
+          </h1>
+          <p className="text-center md:text-lg text-gray-400">
+            Access curated research resources to enhance your academic journey
+          </p>
+        </div>
 
-      {/* Stats Section */}
-      <section className='w-full py-16 bg-gradient-to-r from-indigo-900/20 to-purple-900/20 border-t border-gray-800'>
-        <div className='container mx-auto px-4 sm:px-6 max-w-7xl'>
-          <div className='grid grid-cols-2 md:grid-cols-4 gap-8'>
-            {[
-              { number: '10,000+', label: 'Research Papers' },
-              { number: '5,000+', label: 'Researchers' },
-              { number: '500+', label: 'Institutions' },
-              { number: '50+', label: 'Countries' },
-            ].map((stat, index) => (
-              <div
-                key={index}
-                className='flex flex-col items-center text-center'
+        <div className="flex items-center justify-between my-6 max-w-[80rem] mx-auto">
+          <span className="font-bold">Browse Resources</span>
+          <div className="relative">
+            <div className="relative inline-block">
+              <select
+                className="cursor-pointer hover:opacity-80 pr-8 pl-4 py-1 rounded-md bg-white outline:none focus:outline-none transition-opacity appearance-none"
+                style={{
+                  backgroundImage: "none",
+                }}
+                defaultValue="all"
               >
-                <div className='text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400 mb-2'>
-                  {stat.number}
-                </div>
-                <div className='text-gray-400'>{stat.label}</div>
-              </div>
-            ))}
+                <option value="all">All Types</option>
+                <option value="pdf">PDF</option>
+                <option value="video">Video</option>
+                <option value="link">Link</option>
+                <option value="guide">Guide</option>
+              </select>
+              <ChevronDown className="w-4 h-4 pointer-events-none absolute right-3 top-1/2 -translate-y-1/2" />
+            </div>
           </div>
         </div>
-      </section>
 
-      {/* Call to Action */}
-      <section className='w-full py-16 md:py-24 bg-[#121220] border-t border-gray-800'>
-        <div className='container mx-auto px-4 sm:px-6 max-w-7xl'>
-          <div className='flex flex-col md:flex-row gap-12 items-center'>
-            <div className='flex-1 space-y-6'>
-              <h2 className='text-3xl font-bold tracking-tight md:text-4xl text-white'>
-                Ready to Share Your Research?
-              </h2>
-              <p className='text-lg text-gray-400'>
-                Join our community of researchers and showcase your work to a
-                global audience. Get recognized for your contributions and
-                connect with peers in your field.
-              </p>
-              <div className='flex flex-col sm:flex-row gap-4'>
-                <Button
-                  size='lg'
-                  className='border-2 border-indigo-500 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white rounded-xl px-6 py-3 h-auto'
-                  asChild
-                >
-                  <Link href='/auth/signup'>Submit Your Research</Link>
-                </Button>
-                <Button
-                  size='lg'
-                  variant='outline'
-                  className='border-2 border-indigo-500 text-gray-300 hover:bg-indigo-600 hover:text-white rounded-xl px-6 py-3 h-auto'
-                  asChild
-                >
-                  <Link href='/browse'>Learn More</Link>
-                </Button>
+        <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-[1fr_1fr_1fr] justify-items-center max-w-[80rem] mx-auto">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <div key={index} className="bg-white border border-magenta/10 w-full p-4 rounded-lg space-y-3">
+              <div className="flex justify-between py-2 text-[10px] text-gray-400">
+                <span>Video Files</span>
+                <span>May, 2024</span>
               </div>
-            </div>
-            <div className='flex-1 flex justify-center'>
-              <div className='relative w-full max-w-md'>
-                <div className='absolute inset-0 bg-indigo-500/10 rounded-2xl rotate-3 opacity-30'></div>
-                <div className='absolute inset-0 bg-purple-500/10 rounded-2xl -rotate-3 opacity-30'></div>
-                <div className='relative bg-[#1c1c2b] rounded-2xl shadow-[0_0_15px_rgba(79,70,229,0.2)] p-8 border border-gray-800'>
-                  <div className='flex items-center justify-center mb-6'>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      viewBox='0 0 24 24'
-                      fill='none'
-                      stroke='url(#gradient-icon)'
-                      strokeWidth='2'
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      className='h-12 w-12'
-                    >
-                      <defs>
-                        <linearGradient
-                          id='gradient-icon'
-                          x1='0%'
-                          y1='0%'
-                          x2='100%'
-                          y2='100%'
-                        >
-                          <stop offset='0%' stopColor='#4f46e5' />
-                          <stop offset='100%' stopColor='#8b5cf6' />
-                        </linearGradient>
-                      </defs>
-                      <path d='M12 20h9' />
-                      <path d='M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z' />
-                    </svg>
+              <div className="space-y-3">
+                <h4 className="font-semibold">
+                  Effects of Water Quality on Compress.
+                </h4>
+                <p className="text-sm text-gray-400">
+                  This Paper explores the various effects water quality may have on the
+                  compressive strength of cement based mortar.
+                </p>
+                <div className="flex gap-2 items-center flex-wrap text-[10px]">
+                  <div className="p-0.5 px-2 bg-[#E5FFEF] text-[#00A63B] border rounded-md border-[#CCFFDE]">
+                    #civileng
                   </div>
-                  <h3 className='text-xl font-bold text-center mb-2 text-white'>
-                    Submission Process
-                  </h3>
-                  <ul className='space-y-3'>
-                    {[
-                      'Create an account',
-                      'Upload your research paper',
-                      'Add metadata and keywords',
-                      'Submit for review',
-                      'Get published and cited',
-                    ].map((step, index) => (
-                      <li
-                        key={index}
-                        className='flex items-center text-gray-300'
-                      >
-                        <div className='w-6 h-6 rounded-full bg-gradient-to-r from-indigo-600/30 to-purple-600/30 text-white flex items-center justify-center mr-3 text-sm font-medium'>
-                          {index + 1}
-                        </div>
-                        <span>{step}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="p-0.5 px-2 bg-[#FFE5E7] text-[#DB000E] border rounded-md border-[#FFCCCF]">
+                    #structures
+                  </div>
+                  <div className="p-0.5 px-2 bg-[#FDF2E8] text-[#EB801D] border rounded-md border-[#FBE5D0]">
+                    #materials
+                  </div>
                 </div>
               </div>
+              <button className="ms-auto flex items-center gap-2 py-1 rounded-lg text-magenta hover:opacity-80 transition-opacity duration-300 text-sm">
+                View Resource <ArrowRight className="h-4 w-4" />
+              </button>
             </div>
-          </div>
+          ))}
+
+        <div className="text-right mt-4 ms-auto col-span-full">
+          <Link
+            href="/browse"
+            className="px-4 py-1 rounded-lg text-magenta border-[1.5px] bg-white border-gray-200 shadow-[inset_0_-2px_8px_rgba(0,0,0,0.08)] hover:opacity-80 transition-opacity duration-300"
+          >
+            View All Resources
+          </Link>
+        </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className='w-full py-12 bg-[#0a0a14] border-t border-gray-800'>
-        <div className='container mx-auto px-4 sm:px-6 max-w-7xl'>
-          <div className='grid grid-cols-1 md:grid-cols-4 gap-8'>
-            <div className='col-span-1 md:col-span-2'>
-              <div className='flex items-center gap-2 mb-4'>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  viewBox='0 0 24 24'
-                  fill='none'
-                  stroke='url(#gradient-footer)'
-                  strokeWidth='2'
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  className='h-6 w-6'
-                >
-                  <defs>
-                    <linearGradient
-                      id='gradient-footer'
-                      x1='0%'
-                      y1='0%'
-                      x2='100%'
-                      y2='100%'
-                    >
-                      <stop offset='0%' stopColor='#4f46e5' />
-                      <stop offset='100%' stopColor='#8b5cf6' />
-                    </linearGradient>
-                  </defs>
-                  <path d='M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20' />
-                </svg>
-                <span className='text-xl font-bold text-white'>
-                  ResearchHub
-                </span>
+      {/* Latest News Section */}
+      <div className="mx-auto px-8 py-10 md:py-20">
+        <div className="mx-auto mb-6 text-center space-y-3">
+          <h1 className="text-2xl md:text-5xl font-bold">
+            Latest News
+          </h1>
+          <p className="text-center md:text-lg text-gray-400">
+            Stay updated with the latest news and announcements from our community
+          </p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-6 mt-6 justify-items-center max-w-[80rem] mx-auto">
+          {Array.from({ length: 3 }).map((_, index) => (
+            <div key={index} className="rounded-3xl max-w-[30rem] shadow-[inset_0_0px_0px_5px_rgba(242,242,242,0.5)] overflow-hidden">
+              <div className="w-full">
+                <Image
+                  src="/images/doctor-microscope.png"
+                  className="w-full rounded-t-3xl border-[5px] border-b-0 border-[rgba(242,242,242,0.5)] border-opacity-20"
+                  width={400}
+                  height={100}
+                  alt=""
+                />
               </div>
-              <p className='text-gray-400 mb-4 max-w-md'>
-                A platform dedicated to showcasing exceptional research
-                projects, fostering collaboration, and advancing academic
-                excellence.
-              </p>
-              <div className='flex space-x-4'>
-                <a
-                  href='#'
-                  className='text-gray-500 hover:text-indigo-400 transition ease-in-out duration-300'
-                >
-                  <svg
-                    className='h-6 w-6'
-                    fill='currentColor'
-                    viewBox='0 0 24 24'
-                    aria-hidden='true'
-                  >
-                    <path
-                      fillRule='evenodd'
-                      d='M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z'
-                      clipRule='evenodd'
-                    />
-                  </svg>
-                </a>
-                <a
-                  href='#'
-                  className='text-gray-500 hover:text-indigo-400 transition ease-in-out duration-300'
-                >
-                  <svg
-                    className='h-6 w-6'
-                    fill='currentColor'
-                    viewBox='0 0 24 24'
-                    aria-hidden='true'
-                  >
-                    <path d='M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84' />
-                  </svg>
-                </a>
-                <a
-                  href='#'
-                  className='text-gray-500 hover:text-indigo-400 transition ease-in-out duration-300'
-                >
-                  <svg
-                    className='h-6 w-6'
-                    fill='currentColor'
-                    viewBox='0 0 24 24'
-                    aria-hidden='true'
-                  >
-                    <path
-                      fillRule='evenodd'
-                      d='M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z'
-                      clipRule='evenodd'
-                    />
-                  </svg>
-                </a>
+
+              <div className="px-5 py-4 space-y-4">
+                <span className="block text-gray-400 text-xs">May, 2024</span>
+                <h4 className="font-semibold">
+                  Annual Undergraduate Research Symposium
+                </h4>
+                <p className="text-xs text-gray-400">
+                  This Paper explores the various effects water quality may have on the
+                  compressive strength of cement based mortar.
+                </p>
+
+                <button className="!mt-16 flex items-center gap-2 py-1 rounded-lg text-magenta hover:opacity-80 transition-opacity duration-300 text-sm">
+                  Read Full Story <ArrowRight className="h-4 w-4" />
+                </button>
               </div>
             </div>
-            <div>
-              <h3 className='text-sm font-semibold text-white tracking-wider uppercase mb-4'>
-                Resources
-              </h3>
-              <ul className='space-y-3'>
-                <li>
-                  <Link
-                    href='/browse'
-                    className='text-gray-400 hover:text-indigo-400 transition ease-in-out duration-300'
-                  >
-                    Browse Research
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href='/submit'
-                    className='text-gray-400 hover:text-indigo-400 transition ease-in-out duration-300'
-                  >
-                    Submit Paper
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href='#'
-                    className='text-gray-400 hover:text-indigo-400 transition ease-in-out duration-300'
-                  >
-                    Research Guidelines
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href='#'
-                    className='text-gray-400 hover:text-indigo-400 transition ease-in-out duration-300'
-                  >
-                    Citation Tools
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className='text-sm font-semibold text-white tracking-wider uppercase mb-4'>
-                Company
-              </h3>
-              <ul className='space-y-3'>
-                <li>
-                  <Link
-                    href='#'
-                    className='text-gray-400 hover:text-indigo-400 transition ease-in-out duration-300'
-                  >
-                    About Us
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href='#'
-                    className='text-gray-400 hover:text-indigo-400 transition ease-in-out duration-300'
-                  >
-                    News
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href='#'
-                    className='text-gray-400 hover:text-indigo-400 transition ease-in-out duration-300'
-                  >
-                    Contact
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href='#'
-                    className='text-gray-400 hover:text-indigo-400 transition ease-in-out duration-300'
-                  >
-                    Careers
-                  </Link>
-                </li>
-              </ul>
+          ))}
+        </div>
+      </div>
+
+      {/* CTA Section */}
+      <section className="bg-gradient-to-r max-md:py-8 px-20 py-10 md:py-20 grid md:grid-cols-2 max-sm:mb-0 from-magenta to-[#4500C3]  mx-auto">
+        <div className="flex flex-col justify-center gap-6 md:gap-12">
+          <h4 className="text-white max-sm:text-3xl max-sm:text-center text-7xl font-bold">
+            Ready to Share your Research
+          </h4>
+          <button className="bg-[#7200CC] max-md:mx-auto w-fit px-4 py-2 rounded-lg mt-3 text-white">
+            Submit your work
+          </button>
+        </div>
+        <div className="relative hidden sm:block">
+          <Image
+            src="/images/man-with-book.svg"
+            alt="random"
+            className="h-[30rem] w-full object-cover"
+            width={1000}
+            height={700}
+          />
+          <Image
+            src="/features/magnifying-glass.svg"
+            alt="random"
+            className="object-cover  absolute right-0 bottom-0"
+            width={200}
+            height={300}
+          />
+        </div>
+      </section>
+
+      {/* Footer Section */}
+      <footer className="border">
+        <div className="grid justify-start grid-cols-1 md:grid-cols-2 max-md:gap-9 px-8 md:px-20 py-10 md:py-20">
+          <div className="space-y-3">
+            <header className="md:text-lg font-bold">
+              Resource<span className="text-magenta">HUB</span>
+            </header>
+            <div className="max-sm:text-sm max-w-[25rem] text-justify">
+              A platform dedicated to showcasing exceptional research projects,
+              fostering collaboration, and advancing academic excellence.
             </div>
           </div>
-          <div className='mt-12 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center'>
-            <p className='text-sm text-gray-500'>
-              © 2023 ResearchHub. All rights reserved.
-            </p>
-            <div className='flex space-x-6 mt-4 md:mt-0'>
-              <Link
-                href='#'
-                className='text-sm text-gray-500 hover:text-indigo-400 transition ease-in-out duration-300'
-              >
-                Privacy Policy
-              </Link>
-              <Link
-                href='#'
-                className='text-sm text-gray-500 hover:text-indigo-400 transition ease-in-out duration-300'
-              >
-                Terms of Service
-              </Link>
-              <Link
-                href='#'
-                className='text-sm text-gray-500 hover:text-indigo-400 transition ease-in-out duration-300'
-              >
-                Cookie Policy
-              </Link>
+          <div className="flex flex-col max-md:gap-9 md:flex-row justify-between">
+            <div className="space-y-4 [&>*]:block">
+              <header className="font-bold">RESOURCES</header>
+              <Link href="/browse" className="hover:opacity-60 transition-opacity">Browse Research</Link>
+              <Link href="/submit" className="hover:opacity-60 transition-opacity">Submit Paper</Link>
+              <Link href="/guidelines" className="hover:opacity-60 transition-opacity">Research Guidelines</Link>
+              <Link href="/citation" className="hover:opacity-60 transition-opacity">Citation Tools</Link>
             </div>
+            <div className="space-y-4 [&>*]:block">
+              <header className="font-bold">COMPANY</header>
+              <Link href="/about" className="hover:opacity-60 transition-opacity">About Us</Link>
+              <Link href="/news" className="hover:opacity-60 transition-opacity">Latest News</Link>
+              <Link href="/contact" className="hover:opacity-60 transition-opacity">Contact Us</Link>
+              <Link href="/careers" className="hover:opacity-60 transition-opacity">Careers</Link>
+            </div>
+            <div className="space-y-4 [&>*]:block">
+              <header className="font-bold">WEB</header>
+              <Link href="/privacy" className="hover:opacity-60 transition-opacity">Privacy</Link>
+              <Link href="/terms" className="hover:opacity-60 transition-opacity">Terms of Service</Link>
+              <Link href="/cookie" className="hover:opacity-60 transition-opacity">Cookie Policy</Link>
+            </div>
+          </div>
+        </div>
+        <div className="border-t border-gray-200 py-5 flex max-sm:flex-col gap-6 max-sm:items-center justify-between px-4 sm:px-8 md:px-14 text-sm">
+          <div>&copy; 2025 ULES ARB ResourceHUB. All rights reserved.</div>
+          <div className="flex gap-4 max-sm:justify-end">
+            <Link href="https://instagram.com/ulesarb">
+              <Image
+                src="/socials/instagram.svg"
+                alt="instagram"
+                width={24}
+                height={24}
+              />
+            </Link>
+            <Link href="https://www.linkedin.com/company/ules-arb/">
+              <Image
+                src="/socials/linkedin.svg"
+                alt="linkedin"
+                width={20}
+                height={20}
+              />
+            </Link>
+            <Link href="https://x.com/ulesarbteam">
+              <Image
+                src="/socials/twitter-x.svg"
+                alt="twitter"
+                width={20}
+                height={20}
+              />
+            </Link>
           </div>
         </div>
       </footer>
     </div>
-  );
+  )
 }

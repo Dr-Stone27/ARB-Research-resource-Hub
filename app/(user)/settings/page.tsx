@@ -71,7 +71,7 @@ export default function SettingsPage() {
                 <div className="flex flex-col sm:flex-row gap-6">
                   <div className="flex flex-col items-center space-y-2">
                     <Avatar className="h-24 w-24">
-                      <AvatarImage src="/placeholder.svg?height=96&width=96" alt="Profile" />
+                      <AvatarImage src="/images/placeholder.svg?height=96&width=96" alt="Profile" />
                       <AvatarFallback className="bg-indigo-600 text-white text-xl">AJ</AvatarFallback>
                     </Avatar>
                     <Button

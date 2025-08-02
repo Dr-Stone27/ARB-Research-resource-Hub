@@ -204,10 +204,8 @@ export default function BrowsePage() {
 
       // This is a simplified filter since we don't have actual date objects
       // In a real app, you would compare actual dates
-      if (timePeriod !== "all") {
-        // For demo purposes, just filter randomly based on time period
-        result = result.filter((paper) => paper.id.length > 0)
-      }
+      // For demo purposes, just filter randomly based on time period
+      result = result.filter((paper) => paper.id.length > 0)
     }
 
     // Apply author type filter

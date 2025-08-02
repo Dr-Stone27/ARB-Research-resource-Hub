@@ -1,11 +1,13 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Plus_Jakarta_Sans, Lora, Schibsted_Grotesk } from "next/font/google"
 import "../globals.css"
-import { Navbar } from "@/components/Navbar"
+// import { Navbar } from "@/components/Navbar"
 import { ThemeProvider } from "@/components/theme-provider"
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
+const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-plus-jakarta-sans" })
+const lora = Lora({ subsets: ["latin"], variable: "--font-lora" })
+const schibstedGrotesk = Schibsted_Grotesk({ subsets: ["latin"], variable: "--font-schibsted-grotesk" })
 
 export const metadata: Metadata = {
   title: "Research Resource Hub",
@@ -20,9 +22,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans`}>
+      <body className={`${plusJakartaSans.variable} ${lora.variable} ${schibstedGrotesk.variable} font-sans`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <Navbar />
           {children}
         </ThemeProvider>
       </body>

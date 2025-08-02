@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Upload } from "lucide-react"
 
 export function ProfileSetupStep() {
-  const [avatarUrl, setAvatarUrl] = useState<string>("/placeholder.svg?height=128&width=128")
+  const [avatarUrl, setAvatarUrl] = useState<string>("/images/placeholder.svg?height=128&width=128")
 
   return (
     <div className="container max-w-3xl py-8 px-4 md:py-12">
@@ -26,7 +26,7 @@ export function ProfileSetupStep() {
         <CardContent className="p-6 space-y-6">
           <div className="flex flex-col items-center gap-4">
             <Avatar className="h-24 w-24">
-              <AvatarImage src={avatarUrl || "/placeholder.svg"} alt="Profile" />
+              <AvatarImage src={avatarUrl || "/images/placeholder.svg"} alt="Profile" />
               <AvatarFallback>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

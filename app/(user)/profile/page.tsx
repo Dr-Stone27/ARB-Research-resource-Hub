@@ -34,7 +34,7 @@ export default function ProfilePage() {
                 <div className="flex flex-col items-center space-y-2">
                   <div className="relative">
                     <img
-                      src="/placeholder.svg?height=128&width=128"
+                      src="/images/placeholder.svg?height=128&width=128"
                       alt="Profile"
                       className="h-32 w-32 rounded-full object-cover border"
                     />

@@ -28,7 +28,7 @@ export default function PaperPage() {
                 </div>
                 <div className="mt-4 flex items-center">
                   <Avatar className="h-10 w-10">
-                    <AvatarImage src="/placeholder.svg?height=40&width=40" alt="Alex Johnson" />
+                    <AvatarImage src="/images/placeholder.svg?height=40&width=40" alt="Alex Johnson" />
                     <AvatarFallback>AJ</AvatarFallback>
                   </Avatar>
                   <div className="ml-3">
@@ -156,7 +156,7 @@ export default function PaperPage() {
                       <CardContent>
                         <div className="aspect-video bg-gray-100 flex items-center justify-center">
                           <img
-                            src="/placeholder.svg?height=400&width=800"
+                            src="/images/placeholder.svg?height=400&width=800"
                             alt="Quantum vs. Classical Encryption Breaking Time"
                             className="max-h-full"
                           />
@@ -175,7 +175,7 @@ export default function PaperPage() {
                       <CardContent>
                         <div className="aspect-video bg-gray-100 flex items-center justify-center">
                           <img
-                            src="/placeholder.svg?height=400&width=800"
+                            src="/images/placeholder.svg?height=400&width=800"
                             alt="Lattice-Based Cryptography Security Levels"
                             className="max-h-full"
                           />
@@ -295,7 +295,7 @@ export default function PaperPage() {
                     <div className="rounded-lg border p-4">
                       <div className="flex items-start gap-4">
                         <Avatar>
-                          <AvatarImage src="/placeholder.svg?height=40&width=40" />
+                          <AvatarImage src="/images/placeholder.svg?height=40&width=40" />
                           <AvatarFallback>DR</AvatarFallback>
                         </Avatar>
                         <div className="flex-1">
@@ -330,7 +330,7 @@ export default function PaperPage() {
                     <div className="rounded-lg border p-4">
                       <div className="flex items-start gap-4">
                         <Avatar>
-                          <AvatarImage src="/placeholder.svg?height=40&width=40" />
+                          <AvatarImage src="/images/placeholder.svg?height=40&width=40" />
                           <AvatarFallback>JM</AvatarFallback>
                         </Avatar>
                         <div className="flex-1">
@@ -362,7 +362,7 @@ export default function PaperPage() {
                           <div className="mt-4 ml-8 rounded-lg border p-3">
                             <div className="flex items-start gap-4">
                               <Avatar className="h-8 w-8">
-                                <AvatarImage src="/placeholder.svg?height=32&width=32" />
+                                <AvatarImage src="/images/placeholder.svg?height=32&width=32" />
                                 <AvatarFallback>AJ</AvatarFallback>
                               </Avatar>
                               <div className="flex-1">
@@ -443,7 +443,7 @@ export default function PaperPage() {
                 <CardContent className="space-y-4">
                   <div className="flex flex-col items-center">
                     <Avatar className="h-20 w-20">
-                      <AvatarImage src="/placeholder.svg?height=80&width=80" alt="Alex Johnson" />
+                      <AvatarImage src="/images/placeholder.svg?height=80&width=80" alt="Alex Johnson" />
                       <AvatarFallback>AJ</AvatarFallback>
                     </Avatar>
                     <h3 className="mt-2 font-medium">Alex Johnson</h3>

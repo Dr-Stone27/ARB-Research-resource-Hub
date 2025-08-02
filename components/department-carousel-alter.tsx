@@ -129,7 +129,7 @@ export function DepartmentCarousel() {
   return (
     //
     <div
-      className="relative rounded-3xl bg-[url('/dept_carousel_bg.png')] bg-cover bg-center w-[93%] mx-auto py-12"
+      className="relative rounded-3xl bg-[url('/images/dept_carousel_bg.png')] bg-cover bg-center w-[93%] mx-auto py-12"
       onMouseEnter={() => setIsAutoPlaying(false)}
       onMouseLeave={() => setIsAutoPlaying(true)}
     >

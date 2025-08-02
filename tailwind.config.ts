@@ -20,10 +20,12 @@ const config = {
     },
     extend: {
       fontFamily: {
-        inter: ["var(--font-inter)", "sans-serif"],
-        sans: ["var(--font-inter)", "sans-serif"],
+        sans: ["var(--font-plus-jakarta-sans)", "sans-serif"],
+        lora: ["var(--font-lora)", "serif"],
+        schibstedGrotesk: ["var(--font-schibsted-grotesk)", "sans-serif"]
       },
       colors: {
+        magenta: "#21005D",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
