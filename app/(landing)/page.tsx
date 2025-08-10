@@ -52,21 +52,21 @@ export default function LandingPage() {
           className="md:text-xl font-bold transition ease-in-out duration-300 hover:opacity-80"
           aria-label="ResearchHub Home"
           >
-            Resource<span className="text-magenta">HUB</span>
+            Resource<span className="text-primary">HUB</span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="/browse" className="hover:text-magenta opacity-60 transition-colors">
+            <Link href="/browse" className="hover:text-primary opacity-60 transition-colors">
               Browse
             </Link>
-            <Link href="/submit" className="hover:text-magenta opacity-60 transition-colors">
+            <Link href="/submit" className="hover:text-primary opacity-60 transition-colors">
               Submit
             </Link>
-            <Link href="/about" className="hover:text-magenta opacity-60 transition-colors">
+            <Link href="/about" className="hover:text-primary opacity-60 transition-colors">
               About
             </Link>
-            <Link href="/news" className="hover:text-magenta opacity-60 transition-colors">
+            <Link href="/news" className="hover:text-primary opacity-60 transition-colors">
               News
             </Link>
           </nav>
@@ -75,13 +75,13 @@ export default function LandingPage() {
           <div className="hidden md:flex items-center gap-4">
             <Link
               href="/auth/login"
-              className="px-4 py-2 rounded-xl text-magenta border-[1.5px] border-gray-200 shadow-[inset_0_-2px_8px_rgba(0,0,0,0.08)] hover:opacity-80 transition-opacity duration-300"
+              className="px-4 py-2 rounded-xl text-primary border-[1.5px] border-gray-200 shadow-[inset_0_-2px_8px_rgba(0,0,0,0.08)] hover:opacity-80 transition-opacity duration-300"
             >
               Login
             </Link>
             <Link
               href="/auth/login"
-              className="px-4 py-2 rounded-xl bg-magenta text-white shadow-[inset_0_-2px_4px_rgba(255,255,255,0.35)] drop-shadow-[inset_0_2px_8px_rgba(33,0,93,0.2)] flex items-center gap-2 hover:opacity-80 transition-opacity duration-300"
+              className="px-4 py-2 rounded-xl bg-primary text-white shadow-[inset_0_-2px_4px_rgba(255,255,255,0.35)] drop-shadow-[inset_0_2px_8px_rgba(33,0,93,0.2)] flex items-center gap-2 hover:opacity-80 transition-opacity duration-300"
             >
               <span>Sign Up</span>
               <ArrowRight className="w-4 h-4" />
@@ -91,7 +91,7 @@ export default function LandingPage() {
           {/* Mobile Menu Button */}
           <button
             ref={menuButtonRef}
-            className="md:hidden rounded-lg hover:text-magenta hover:opacity-80 transition-all duration-300"
+            className="md:hidden rounded-lg hover:text-primary hover:opacity-80 transition-all duration-300"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle mobile menu"
           >
@@ -112,28 +112,28 @@ export default function LandingPage() {
             <nav className="flex flex-col py-4 px-8">
               <Link 
                 href="/browse" 
-                className="py-3 hover:bg-gray-50 transition-colors hover:text-magenta"
+                className="py-3 hover:bg-gray-50 transition-colors hover:text-primary"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Browse
               </Link>
               <Link 
                 href="/submit" 
-                className="py-3 hover:bg-gray-50 transition-colors hover:text-magenta"
+                className="py-3 hover:bg-gray-50 transition-colors hover:text-primary"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Submit
               </Link>
               <Link 
                 href="/about" 
-                className="py-3 hover:bg-gray-50 transition-colors hover:text-magenta"
+                className="py-3 hover:bg-gray-50 transition-colors hover:text-primary"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 About
               </Link>
               <Link 
                 href="/news" 
-                className="py-3 hover:bg-gray-50 transition-colors hover:text-magenta"
+                className="py-3 hover:bg-gray-50 transition-colors hover:text-primary"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 News
@@ -142,14 +142,14 @@ export default function LandingPage() {
             <div className="border-t border-gray-100 px-6 py-4 space-y-4">
               <Link
                 href="/auth/login"
-                className="w-fit text-center px-4 py-2 rounded-xl text-magenta border-[1.5px] border-gray-200 shadow-[inset_0_-2px_8px_rgba(0,0,0,0.08)] hover:opacity-80 transition-opacity duration-300"
+                className="w-fit text-center px-4 py-2 rounded-xl text-primary border-[1.5px] border-gray-200 shadow-[inset_0_-2px_8px_rgba(0,0,0,0.08)] hover:opacity-80 transition-opacity duration-300"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Login
               </Link>
               <Link
                 href="/auth/login"
-                className="w-fit text-center px-4 py-2 rounded-xl bg-magenta text-white shadow-[inset_0_-2px_4px_rgba(255,255,255,0.35)] drop-shadow-[inset_0_2px_8px_rgba(33,0,93,0.2)] flex items-center justify-center gap-2 hover:opacity-80 transition-opacity duration-300"
+                className="w-fit text-center px-4 py-2 rounded-xl bg-primary text-white shadow-[inset_0_-2px_4px_rgba(255,255,255,0.35)] drop-shadow-[inset_0_2px_8px_rgba(33,0,93,0.2)] flex items-center justify-center gap-2 hover:opacity-80 transition-opacity duration-300"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <span>Sign Up</span>
@@ -174,14 +174,14 @@ export default function LandingPage() {
           <div className="flex flex-col md:flex-row items-center gap-4">
             <Link
               href="/auth/login"
-              className="px-4 py-1.5 rounded-xl bg-magenta text-white shadow-[inset_0_-2px_4px_rgba(255,255,255,0.35)] drop-shadow-[inset_0_2px_8px_rgba(33,0,93,0.2)] flex items-center gap-2 hover:opacity-80 transition-opacity duration-300"
+              className="px-4 py-1.5 rounded-xl bg-primary text-white shadow-[inset_0_-2px_4px_rgba(255,255,255,0.35)] drop-shadow-[inset_0_2px_8px_rgba(33,0,93,0.2)] flex items-center gap-2 hover:opacity-80 transition-opacity duration-300"
             >
               <span>Browse Research</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="/auth/login"
-              className="px-4 py-1.5 rounded-xl text-magenta border-[1.5px] bg-white border-gray-200 shadow-[inset_0_-2px_8px_rgba(0,0,0,0.08)] hover:opacity-80 transition-opacity duration-300"
+              className="px-4 py-1.5 rounded-xl text-primary border-[1.5px] bg-white border-gray-200 shadow-[inset_0_-2px_8px_rgba(0,0,0,0.08)] hover:opacity-80 transition-opacity duration-300"
             >
               Submit your work
             </Link>
@@ -199,7 +199,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="mx-auto bg-magenta/5 px-4 py-10 md:py-20">
+      <section className="mx-auto bg-primary-50/25 px-4 py-10 md:py-20">
         <div className="mx-auto mb-6 text-center space-y-3">
           <h1 className="text-2xl md:text-5xl font-bold">
             Our Features
@@ -224,7 +224,7 @@ export default function LandingPage() {
               />
             </div>
             <div className="order-2 md:order-1">
-              <div className="px-2 py-1 border border-magenta w-fit text-sm rounded-lg">FILTER PAPERS</div>
+              <div className="px-2 py-1 border border-primary w-fit text-sm rounded-lg">FILTER PAPERS</div>
               <h4 className="text-xl md:text-2xl my-3">
                 Find research papers easily with our filter system
               </h4>
@@ -319,7 +319,7 @@ export default function LandingPage() {
         <nav className="relative grid grid-cols-4 gap-1 p-1 border rounded-full w-fit mx-auto border-gray-200 my-5 bg-white">
           {/* Animated Background */}
           <div 
-            className="absolute top-1 left-1 h-[calc(100%-0.5rem)] bg-magenta rounded-full transition-all duration-300 ease-in-out"
+            className="absolute top-1 left-1 h-[calc(100%-0.5rem)] bg-primary rounded-full transition-all duration-300 ease-in-out"
             style={{ 
               width: 'calc(25% - 0.125rem)',
               transform: `translateX(${getResearchTabPosition()}%)`
@@ -330,7 +330,7 @@ export default function LandingPage() {
             <button
               key={index}
               className={`relative px-5 py-2 rounded-full transition-colors duration-300 text-[10px] md:text-sm flex items-center justify-center ${
-                researchTab === tab ? "text-white" : "text-gray-400 hover:text-magenta"
+                researchTab === tab ? "text-white" : "text-gray-400 hover:text-primary"
               }`}
               onClick={() => setResearchTab(tab)}
             >
@@ -382,7 +382,7 @@ export default function LandingPage() {
               </div>
               <div className="flex justify-between">
                 <span>256 downloads</span>
-                <span className="text-magenta">View Paper</span>
+                <span className="text-primary">View Paper</span>
               </div>
             </div>
           ))}
@@ -390,7 +390,7 @@ export default function LandingPage() {
         <div className="text-right mt-4">
           <Link
             href="/browse"
-            className="px-4 py-1 rounded-lg text-magenta border-[1.5px] bg-white border-gray-200 shadow-[inset_0_-2px_8px_rgba(0,0,0,0.08)] hover:opacity-80 transition-opacity duration-300"
+            className="px-4 py-1 rounded-lg text-primary border-[1.5px] bg-white border-gray-200 shadow-[inset_0_-2px_8px_rgba(0,0,0,0.08)] hover:opacity-80 transition-opacity duration-300"
           >
             View All Research
           </Link>
@@ -412,7 +412,7 @@ export default function LandingPage() {
       </section>
 
       {/* Resource Hub Section */}
-      <section className="mx-auto px-8 py-10 md:py-20 bg-magenta/5">
+      <section className="mx-auto px-8 py-10 md:py-20 bg-primary-50/25">
         <div className="mx-auto mb-6 text-center space-y-3">
           <h1 className="text-2xl md:text-5xl font-bold">
             Resource Hub
@@ -446,7 +446,7 @@ export default function LandingPage() {
 
         <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-[1fr_1fr_1fr] justify-items-center max-w-[80rem] mx-auto">
           {Array.from({ length: 6 }).map((_, index) => (
-            <div key={index} className="bg-white border border-magenta/10 w-full p-4 rounded-lg space-y-3">
+            <div key={index} className="bg-white border border-primary-50 w-full p-4 rounded-lg space-y-3">
               <div className="flex justify-between py-2 text-[10px] text-gray-400">
                 <span>Video Files</span>
                 <span>May, 2024</span>
@@ -471,7 +471,7 @@ export default function LandingPage() {
                   </div>
                 </div>
               </div>
-              <button className="ms-auto flex items-center gap-2 py-1 rounded-lg text-magenta hover:opacity-80 transition-opacity duration-300 text-sm">
+              <button className="ms-auto flex items-center gap-2 py-1 rounded-lg text-primary hover:opacity-80 transition-opacity duration-300 text-sm">
                 View Resource <ArrowRight className="h-4 w-4" />
               </button>
             </div>
@@ -480,7 +480,7 @@ export default function LandingPage() {
         <div className="text-right mt-4 ms-auto col-span-full">
           <Link
             href="/browse"
-            className="px-4 py-1 rounded-lg text-magenta border-[1.5px] bg-white border-gray-200 shadow-[inset_0_-2px_8px_rgba(0,0,0,0.08)] hover:opacity-80 transition-opacity duration-300"
+            className="px-4 py-1 rounded-lg text-primary border-[1.5px] bg-white border-gray-200 shadow-[inset_0_-2px_8px_rgba(0,0,0,0.08)] hover:opacity-80 transition-opacity duration-300"
           >
             View All Resources
           </Link>
@@ -521,7 +521,7 @@ export default function LandingPage() {
                   compressive strength of cement based mortar.
                 </p>
 
-                <button className="!mt-16 flex items-center gap-2 py-1 rounded-lg text-magenta hover:opacity-80 transition-opacity duration-300 text-sm">
+                <button className="!mt-16 flex items-center gap-2 py-1 rounded-lg text-primary hover:opacity-80 transition-opacity duration-300 text-sm">
                   Read Full Story <ArrowRight className="h-4 w-4" />
                 </button>
               </div>
@@ -531,7 +531,7 @@ export default function LandingPage() {
       </div>
 
       {/* CTA Section */}
-      <section className="bg-gradient-to-r max-md:py-8 px-20 py-10 md:py-20 grid md:grid-cols-2 max-sm:mb-0 from-magenta to-[#4500C3]  mx-auto">
+      <section className="bg-gradient-to-r max-md:py-8 px-20 py-10 md:py-20 grid md:grid-cols-2 max-sm:mb-0 from-primary to-[#4500C3]  mx-auto">
         <div className="flex flex-col justify-center gap-6 md:gap-12">
           <h4 className="text-white max-sm:text-3xl max-sm:text-center text-7xl font-bold">
             Ready to Share your Research
@@ -563,7 +563,7 @@ export default function LandingPage() {
         <div className="grid justify-start grid-cols-1 md:grid-cols-2 max-md:gap-9 px-8 md:px-20 py-10 md:py-20">
           <div className="space-y-3">
             <header className="md:text-lg font-bold">
-              Resource<span className="text-magenta">HUB</span>
+              Resource<span className="text-primary">HUB</span>
             </header>
             <div className="max-sm:text-sm max-w-[25rem] text-justify">
               A platform dedicated to showcasing exceptional research projects,
