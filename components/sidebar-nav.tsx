@@ -158,6 +158,7 @@ export function SidebarNav() {
                 <Link
                   key={index}
                   href={navItem.href}
+                  onClick={() => setIsMenuOpen(false)}
                   className={`flex gap-3 items-center py-2 px-4 cursor-pointer transition-all duration-300 rounded-sm ${pathname === navItem.href ? "bg-[#F8F5FF] dark:text-black" : "hover:bg-primary-50/50"}`}
                 >
                   <div className={`${pathname === navItem.href && "text-primary-500"}`}>
@@ -174,7 +175,10 @@ export function SidebarNav() {
           {/* Mobile Logout Button */}
           <div className="lg:hidden">
             <button
-              onClick={handleLogout}
+              onClick={() => {
+                handleLogout()
+                setIsMenuOpen(false)
+              }}
               className="flex gap-3 items-center py-2 px-4 cursor-pointer transition-all duration-300 rounded-sm hover:bg-red-50 dark:hover:bg-red-900/20 w-full text-left"
             >
               <LogOut className="w-5 h-5 text-red-600 dark:text-red-400" />

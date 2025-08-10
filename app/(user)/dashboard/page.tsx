@@ -1,6 +1,6 @@
 "use client"
 
-import { Upload, User, Filter, ChevronRight, ChevronDown, Download, Quote, Eye, FileText } from "lucide-react"
+import { Upload, User, ChevronDown } from "lucide-react"
 import InsightsPanel from "@/components/insights-panel"
 import Link from "next/link"
 import Image from "next/image"
@@ -42,8 +42,6 @@ export default function DashboardPage() {
       papers: 89
     }
   }
-
-  const currentStats = statsData[selectedTimeFilter as keyof typeof statsData]
 
   const researchPapers = [
     {

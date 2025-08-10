@@ -27,13 +27,13 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <SidebarNav />
 
-          <section className="lg:ml-64 relative pb-12">
+          <section className="lg:ml-64 relative">
             {/* <Header /> */}
             <header className="border-b border-gray-200 bg-white py-5 hidden lg:block sticky top-0 z-50">
               Header
             </header>
 
-              <section className="py-16 lg:py-10 px-6 lg:px-4 lg:bg-gray-50 ">
+              <section className="py-16 lg:py-10 px-6 lg:px-4 lg:bg-gray-50">
                 {children}
               </section>
             </section>
