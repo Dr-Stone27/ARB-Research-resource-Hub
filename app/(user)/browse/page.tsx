@@ -1,20 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Label } from "@/components/ui/label"
-import { Download, Filter, Search, X } from "lucide-react"
-import { DashboardHeader } from "@/components/dashboard-header"
-import { DashboardShell } from "@/components/dashboard-shell"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Tag } from "@/components/ui/tag"
-import { Separator } from "@/components/ui/separator"
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { Download, Search, X, ChevronDown, ChevronUp } from "lucide-react"
 
 // Sample research papers data
 const researchPapers = [
@@ -156,7 +143,22 @@ export default function BrowsePage() {
   const [selectedAuthorTypes, setSelectedAuthorTypes] = useState<AuthorType[]>([])
   const [selectedDepartments, setSelectedDepartments] = useState<Department[]>([])
   const [selectedTags, setSelectedTags] = useState<string[]>([])
-  const [isFilterOpen, setIsFilterOpen] = useState(true)
+  const [isFilterOpen, setIsFilterOpen] = useState(false)
+  const [activeTab, setActiveTab] = useState("all")
+
+  // Mobile detection
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024) // lg breakpoint
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   // State for filtered papers
   const [filteredPapers, setFilteredPapers] = useState(researchPapers)
@@ -277,38 +279,53 @@ export default function BrowsePage() {
   const allTags = Array.from(new Set(researchPapers.flatMap((paper) => paper.tags)))
 
   return (
-    <DashboardShell>
-      <DashboardHeader heading="Browse Research" text="Explore research papers across various disciplines.">
-        <div className="relative w-full max-w-sm">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            type="search"
-            placeholder="Search papers..."
-            className="w-full pl-8"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+    <div>
+      <div className="flex-1 overflow-hidden space-y-4">
+        {/* Header Section */}
+        <div className="mb-6 flex items-center justify-between gap-x-20 gap-y-2 flex-wrap">
+          <div className="flex-1 min-w-96">
+            <h1 className="text-lg font-semibold text-gray-900 mb-2">Browse Your Library</h1>
+            <p className="text-gray-500 text-sm">Explore research papers across various disciplines.</p>
+          </div>
+          
+          {/* Search Bar */}
+          <div className="w-full h-fit max-w-xs mt-4 flex items-center gap-2 bg-white border border-[#F2F2F2] rounded-lg ps-2">
+            <Search className="h-5 w-5 text-gray-400" />
+            <input
+              type="search"
+              placeholder="Search papers..."
+              className="w-full py-1.5 text-gray-900 placeholder-gray-500 outline-none focus:border-transparent"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
         </div>
-      </DashboardHeader>
 
-      <div className="grid gap-4 grid-cols-1 md:grid-cols-4">
-        <div className="md:col-span-1 space-y-4">
-          <Collapsible open={isFilterOpen} onOpenChange={setIsFilterOpen} className="w-full">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between py-3">
-                <CardTitle>Filters</CardTitle>
-                <CollapsibleTrigger asChild>
-                  <Button variant="ghost" size="sm" className="w-9 p-0 md:hidden">
-                    <Filter className="h-4 w-4" />
-                    <span className="sr-only">{isFilterOpen ? "Close" : "Open"} filters</span>
-                  </Button>
-                </CollapsibleTrigger>
-              </CardHeader>
-              <CollapsibleContent>
-                <CardContent className="space-y-6">
+        <div className="grid gap-6 grid-cols-1 lg:grid-cols-4">
+          {/* Filters Sidebar */}
+          <div className="lg:col-span-1">
+            <div className="bg-white border border-[#F3EDF7] rounded-lg">
+              {/* Filter Header */}
+              <div className="flex items-center justify-between px-4 py-2 border-b border-[#F2F2F2]">
+                <h2 className="text-lg font-semibold text-gray-900">Filters</h2>
+                <button
+                  onClick={() => setIsFilterOpen(!isFilterOpen)}
+                  className="lg:hidden p-2 hover:bg-gray-50 rounded-md transition-colors"
+                >
+                  {isFilterOpen ? (
+                    <ChevronUp className="h-5 w-5 text-gray-500" />
+                  ) : (
+                    <ChevronDown className="h-5 w-5 text-gray-500" />
+                  )}
+                </button>
+              </div>
+
+              {/* Filter Content */}
+              {(!isMobile || (isMobile && isFilterOpen)) && (
+                <div className="p-4 space-y-6">
                   {/* Research Type Filter */}
-                  <div className="space-y-2">
-                    <h3 className="text-sm font-medium">Research Type</h3>
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-900 mb-3">Research Type</h3>
                     <div className="flex flex-wrap gap-2">
                       {[
                         { id: "analytical", label: "Analytical" },
@@ -316,42 +333,40 @@ export default function BrowsePage() {
                         { id: "experimental", label: "Experimental" },
                         { id: "hybrid", label: "Hybrid" },
                       ].map((type) => (
-                        <Badge
+                        <button
                           key={type.id}
-                          variant={selectedTypes.includes(type.id as ResearchType) ? "default" : "outline"}
-                          className={`cursor-pointer ${
-                            selectedTypes.includes(type.id as ResearchType)
-                              ? "bg-indigo-600 text-white"
-                              : "hover:bg-indigo-600/10"
-                          } rounded-full px-4 py-2`}
                           onClick={() => toggleResearchType(type.id as ResearchType)}
+                          className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                            selectedTypes.includes(type.id as ResearchType)
+                              ? "bg-secondary-50 text-secondary-700 border border-secondary-200"
+                              : "bg-white text-gray-600 border border-[#F2F2F2] hover:bg-gray-50"
+                          }`}
                         >
                           {type.label}
-                        </Badge>
+                        </button>
                       ))}
                     </div>
                   </div>
 
                   {/* Time Period Filter */}
-                  <div className="space-y-2">
-                    <h3 className="text-sm font-medium">Time Period</h3>
-                    <Select value={timePeriod} onValueChange={(value) => setTimePeriod(value as TimePeriod)}>
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select time period" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="7days">Past 7 Days</SelectItem>
-                        <SelectItem value="30days">Past Month</SelectItem>
-                        <SelectItem value="6months">Past 6 Months</SelectItem>
-                        <SelectItem value="1year">Past Year</SelectItem>
-                        <SelectItem value="all">All Time</SelectItem>
-                      </SelectContent>
-                    </Select>
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-900 mb-3">Time Period</h3>
+                    <select
+                      value={timePeriod}
+                      onChange={(e) => setTimePeriod(e.target.value as TimePeriod)}
+                      className="w-full px-3 py-1.5 bg-white border border-[#F2F2F2] rounded-lg text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-secondary-500"
+                    >
+                      <option value="7days">Past 7 Days</option>
+                      <option value="30days">Past Month</option>
+                      <option value="6months">Past 6 Months</option>
+                      <option value="1year">Past Year</option>
+                      <option value="all">All Time</option>
+                    </select>
                   </div>
 
                   {/* Author Type Filter */}
-                  <div className="space-y-2">
-                    <h3 className="text-sm font-medium">Author Type</h3>
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-900 mb-3">Author Type</h3>
                     <div className="space-y-2">
                       {[
                         { id: "undergraduate", label: "Undergraduate Student" },
@@ -360,23 +375,22 @@ export default function BrowsePage() {
                         { id: "researcher", label: "Independent Researcher" },
                         { id: "collaboration", label: "Collaboration" },
                       ].map((type) => (
-                        <div key={type.id} className="flex items-center space-x-2">
-                          <Checkbox
-                            id={`author-${type.id}`}
+                        <label key={type.id} className="flex items-center space-x-3 cursor-pointer">
+                          <input
+                            type="checkbox"
                             checked={selectedAuthorTypes.includes(type.id as AuthorType)}
-                            onCheckedChange={() => toggleAuthorType(type.id as AuthorType)}
+                            onChange={() => toggleAuthorType(type.id as AuthorType)}
+                            className="w-4 h-4 text-secondary-600 bg-white border-[#F2F2F2] rounded focus:ring-secondary-500 focus:ring-2"
                           />
-                          <Label htmlFor={`author-${type.id}`} className="text-sm font-normal">
-                            {type.label}
-                          </Label>
-                        </div>
+                          <span className="text-sm text-gray-700">{type.label}</span>
+                        </label>
                       ))}
                     </div>
                   </div>
 
                   {/* Department Filter */}
-                  <div className="space-y-2">
-                    <h3 className="text-sm font-medium">Department</h3>
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-900 mb-3">Department</h3>
                     <div className="space-y-2">
                       {[
                         { id: "mechanical", label: "Mechanical Engineering" },
@@ -390,276 +404,280 @@ export default function BrowsePage() {
                         { id: "systems", label: "Systems Engineering" },
                         { id: "petroleum", label: "Petroleum & Gas Engineering" },
                       ].map((dept) => (
-                        <div key={dept.id} className="flex items-center space-x-2">
-                          <Checkbox
-                            id={`dept-${dept.id}`}
+                        <label key={dept.id} className="flex items-center space-x-3 cursor-pointer">
+                          <input
+                            type="checkbox"
                             checked={selectedDepartments.includes(dept.id as Department)}
-                            onCheckedChange={() => toggleDepartment(dept.id as Department)}
+                            onChange={() => toggleDepartment(dept.id as Department)}
+                            className="w-4 h-4 text-secondary-600 bg-white border-[#F2F2F2] rounded focus:ring-secondary-500 focus:ring-2"
                           />
-                          <Label htmlFor={`dept-${dept.id}`} className="text-sm font-normal">
-                            {dept.label}
-                          </Label>
-                        </div>
+                          <span className="text-sm text-gray-700">{dept.label}</span>
+                        </label>
                       ))}
                     </div>
                   </div>
 
                   {/* Tags Filter */}
-                  <div className="space-y-2">
-                    <h3 className="text-sm font-medium">Popular Tags</h3>
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-900 mb-3">Popular Tags</h3>
                     <div className="flex flex-wrap gap-2">
                       {allTags.slice(0, 10).map((tag) => (
-                        <Badge
+                        <button
                           key={tag}
-                          variant={selectedTags.includes(tag) ? "default" : "outline"}
-                          className={`cursor-pointer ${
-                            selectedTags.includes(tag) ? "bg-indigo-600 text-white" : "hover:bg-indigo-600/10"
-                          } rounded-full px-3 py-1`}
                           onClick={() => toggleTag(tag)}
+                          className={`px-2 py-1 rounded-md text-xs font-medium transition-colors ${
+                            selectedTags.includes(tag)
+                              ? "bg-secondary-50 text-secondary-700 border border-secondary-200"
+                              : "bg-white text-gray-600 border border-[#F2F2F2] hover:bg-gray-50"
+                          }`}
                         >
                           {tag}
-                        </Badge>
+                        </button>
                       ))}
                     </div>
                   </div>
 
-                  <Separator />
+                  <hr className="border-[#F2F2F2]" />
 
-                  <Button
-                    variant="outline"
-                    className="w-full border-2 border-indigo-500 hover:bg-indigo-600 hover:text-white rounded-xl px-4 py-2 h-auto"
+                  {/* Clear Filters Button */}
+                  <button
                     onClick={clearFilters}
+                    className="w-full px-4 py-2 border border-[#F2F2F2] text-secondary-600 rounded-lg hover:bg-secondary-50 transition-colors"
                   >
-                    <X className="mr-2 h-4 w-4" />
+                    <X className="inline-block w-4 h-4 mr-2" />
                     Clear Filters
-                  </Button>
-                </CardContent>
-              </CollapsibleContent>
-            </Card>
-          </Collapsible>
-        </div>
-
-        <div className="md:col-span-3 space-y-4">
-          <Tabs defaultValue="all" className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="all">All</TabsTrigger>
-              <TabsTrigger value="recent">Recent</TabsTrigger>
-              <TabsTrigger value="popular">Popular</TabsTrigger>
-              <TabsTrigger value="trending">Trending</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="all" className="mt-4">
-              {/* Active Filters Display */}
-              {(selectedTypes.length > 0 ||
-                selectedAuthorTypes.length > 0 ||
-                selectedDepartments.length > 0 ||
-                selectedTags.length > 0 ||
-                timePeriod !== "all" ||
-                searchQuery) && (
-                <div className="mb-4 p-3 bg-[#1c1c2b]/50 rounded-lg border border-gray-800">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-sm text-gray-400">Active filters:</span>
-
-                    {searchQuery && (
-                      <Badge variant="secondary" className="flex items-center gap-1 rounded-full">
-                        Search: {searchQuery}
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-4 w-4 p-0 ml-1"
-                          onClick={() => setSearchQuery("")}
-                        >
-                          <X className="h-3 w-3" />
-                          <span className="sr-only">Remove</span>
-                        </Button>
-                      </Badge>
-                    )}
-
-                    {selectedTypes.map((type) => (
-                      <Badge key={type} variant="secondary" className="flex items-center gap-1 rounded-full">
-                        Type: {type.charAt(0).toUpperCase() + type.slice(1)}
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-4 w-4 p-0 ml-1"
-                          onClick={() => toggleResearchType(type)}
-                        >
-                          <X className="h-3 w-3" />
-                          <span className="sr-only">Remove</span>
-                        </Button>
-                      </Badge>
-                    ))}
-
-                    {timePeriod !== "all" && (
-                      <Badge variant="secondary" className="flex items-center gap-1 rounded-full">
-                        Time:{" "}
-                        {timePeriod === "7days"
-                          ? "Past 7 Days"
-                          : timePeriod === "30days"
-                            ? "Past Month"
-                            : timePeriod === "6months"
-                              ? "Past 6 Months"
-                              : "Past Year"}
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-4 w-4 p-0 ml-1"
-                          onClick={() => setTimePeriod("all")}
-                        >
-                          <X className="h-3 w-3" />
-                          <span className="sr-only">Remove</span>
-                        </Button>
-                      </Badge>
-                    )}
-
-                    {selectedAuthorTypes.map((type) => (
-                      <Badge key={type} variant="secondary" className="flex items-center gap-1 rounded-full">
-                        Author: {type.charAt(0).toUpperCase() + type.slice(1)}
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-4 w-4 p-0 ml-1"
-                          onClick={() => toggleAuthorType(type)}
-                        >
-                          <X className="h-3 w-3" />
-                          <span className="sr-only">Remove</span>
-                        </Button>
-                      </Badge>
-                    ))}
-
-                    {selectedDepartments.map((dept) => (
-                      <Badge key={dept} variant="secondary" className="flex items-center gap-1 rounded-full">
-                        Dept: {dept.charAt(0).toUpperCase() + dept.slice(1)}
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-4 w-4 p-0 ml-1"
-                          onClick={() => toggleDepartment(dept)}
-                        >
-                          <X className="h-3 w-3" />
-                          <span className="sr-only">Remove</span>
-                        </Button>
-                      </Badge>
-                    ))}
-
-                    {selectedTags.map((tag) => (
-                      <Badge key={tag} variant="secondary" className="flex items-center gap-1 rounded-full">
-                        {tag}
-                        <Button variant="ghost" size="icon" className="h-4 w-4 p-0 ml-1" onClick={() => toggleTag(tag)}>
-                          <X className="h-3 w-3" />
-                          <span className="sr-only">Remove</span>
-                        </Button>
-                      </Badge>
-                    ))}
-
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="ml-auto text-xs text-indigo-400 hover:text-indigo-300"
-                      onClick={clearFilters}
-                    >
-                      Clear All
-                    </Button>
-                  </div>
+                  </button>
                 </div>
               )}
+            </div>
+          </div>
 
-              {filteredPapers.length === 0 ? (
-                <div className="text-center py-12">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-indigo-900/20 mb-4">
-                    <Search className="h-8 w-8 text-indigo-400" />
-                  </div>
-                  <h3 className="text-xl font-medium text-white mb-2">No results found</h3>
-                  <p className="text-gray-400 max-w-md mx-auto">
-                    We couldn't find any research papers matching your filters. Try adjusting your search criteria.
-                  </p>
-                  <Button
-                    variant="outline"
-                    className="mt-4 border-2 border-indigo-500 hover:bg-indigo-600 hover:text-white rounded-xl px-4 py-2 h-auto"
-                    onClick={clearFilters}
+          {/* Main Content */}
+          <div className="lg:col-span-3">
+            {/* Tabs */}
+            <div className="mb-6">
+              <div className="flex space-x-1 bg-white border border-[#F2F2F2] p-1 rounded-lg">
+                {["all", "recent", "popular", "trending"].map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`flex-1 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                      activeTab === tab
+                        ? "bg-secondary-50 text-secondary-700"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                    }`}
                   >
-                    Clear All Filters
-                  </Button>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {filteredPapers.map((paper) => (
-                    <Card key={paper.id} className="flex flex-col h-full">
-                      <CardHeader>
-                        <div className="flex justify-between items-start">
-                          <Tag variant={paper.type as "analytical" | "simulation" | "experimental"} className="mb-2">
-                            {paper.type.charAt(0).toUpperCase() + paper.type.slice(1)}
-                          </Tag>
-                          <span className="text-sm text-gray-500">{paper.date}</span>
-                        </div>
-                        <CardTitle className="text-xl">{paper.title}</CardTitle>
-                        <div className="text-sm text-gray-500">by {paper.author}</div>
-                      </CardHeader>
-                      <CardContent className="flex-grow">
-                        <p className="text-gray-600 line-clamp-3">{paper.abstract}</p>
-                        <div className="flex flex-wrap gap-1.5 mt-3">
-                          {paper.tags.map((tag, index) => (
-                            <Tag key={index} clickable onClick={() => toggleTag(tag)}>
-                              {tag}
-                            </Tag>
-                          ))}
-                        </div>
-                      </CardContent>
-                      <CardFooter className="flex justify-between border-t border-gray-800 pt-4">
-                        <div className="flex items-center text-sm text-gray-500">
-                          <Download className="h-4 w-4 mr-1" />
-                          {paper.downloads} downloads
-                        </div>
-                        <Button variant="ghost" size="sm">
-                          Read More
-                        </Button>
-                      </CardFooter>
-                    </Card>
+                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Active Filters Display */}
+            {(selectedTypes.length > 0 ||
+              selectedAuthorTypes.length > 0 ||
+              selectedDepartments.length > 0 ||
+              selectedTags.length > 0 ||
+              timePeriod !== "all" ||
+              searchQuery) && (
+              <div className="mb-6 p-4 bg-[#FCFAFF] border border-[#F4F2FD] rounded-lg">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-sm text-gray-600">Active filters:</span>
+
+                  {searchQuery && (
+                    <span className="inline-flex items-center gap-1 px-3 py-1 bg-white border border-[#F2F2F2] text-gray-700 rounded-full text-sm">
+                      Search: {searchQuery}
+                      <button
+                        onClick={() => setSearchQuery("")}
+                        className="ml-1 p-1 hover:bg-gray-50 rounded-full"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </span>
+                  )}
+
+                  {selectedTypes.map((type) => (
+                    <span key={type} className="inline-flex items-center gap-1 px-3 py-1 bg-white border border-[#F2F2F2] text-gray-700 rounded-full text-sm">
+                      Type: {type.charAt(0).toUpperCase() + type.slice(1)}
+                      <button
+                        onClick={() => toggleResearchType(type)}
+                        className="ml-1 p-1 hover:bg-gray-50 rounded-full"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </span>
                   ))}
-                </div>
-              )}
 
-              {filteredPapers.length > 0 && (
-                <div className="flex justify-center mt-6">
-                  <Button
-                    variant="outline"
-                    className="mx-2 border-2 border-indigo-500 hover:bg-indigo-600 hover:text-white rounded-xl px-4 py-2 h-auto"
+                  {timePeriod !== "all" && (
+                    <span className="inline-flex items-center gap-1 px-3 py-1 bg-white border border-[#F2F2F2] text-gray-700 rounded-full text-sm">
+                      Time:{" "}
+                      {timePeriod === "7days"
+                        ? "Past 7 Days"
+                        : timePeriod === "30days"
+                          ? "Past Month"
+                          : timePeriod === "6months"
+                            ? "Past 6 Months"
+                            : "Past Year"}
+                      <button
+                        onClick={() => setTimePeriod("all")}
+                        className="ml-1 p-1 hover:bg-gray-50 rounded-full"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </span>
+                  )}
+
+                  {selectedAuthorTypes.map((type) => (
+                    <span key={type} className="inline-flex items-center gap-1 px-3 py-1 bg-white border border-[#F2F2F2] text-gray-700 rounded-full text-sm">
+                      Author: {type.charAt(0).toUpperCase() + type.slice(1)}
+                      <button
+                        onClick={() => toggleAuthorType(type)}
+                        className="ml-1 p-1 hover:bg-gray-50 rounded-full"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </span>
+                  ))}
+
+                  {selectedDepartments.map((dept) => (
+                    <span key={dept} className="inline-flex items-center gap-1 px-3 py-1 bg-white border border-[#F2F2F2] text-gray-700 rounded-full text-sm">
+                      Dept: {dept.charAt(0).toUpperCase() + dept.slice(1)}
+                      <button
+                        onClick={() => toggleDepartment(dept)}
+                        className="ml-1 p-1 hover:bg-gray-50 rounded-full"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </span>
+                  ))}
+
+                  {selectedTags.map((tag) => (
+                    <span key={tag} className="inline-flex items-center gap-1 px-3 py-1 bg-white border border-[#F2F2F2] text-gray-700 rounded-full text-sm">
+                      {tag}
+                      <button
+                        onClick={() => toggleTag(tag)}
+                        className="ml-1 p-1 hover:bg-gray-50 rounded-full"
+                      >
+                        <X className="h-3 w-3" />
+                      </button>
+                    </span>
+                  ))}
+
+                  <button
+                    onClick={clearFilters}
+                    className="ml-auto text-xs text-secondary-600 hover:text-secondary-700 underline"
                   >
-                    Previous
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="mx-2 border-2 border-indigo-500 hover:bg-indigo-600 hover:text-white rounded-xl px-4 py-2 h-auto"
-                  >
-                    Next
-                  </Button>
+                    Clear All
+                  </button>
                 </div>
-              )}
-            </TabsContent>
-
-            <TabsContent value="recent" className="mt-4">
-              {/* Recent papers would be displayed here */}
-              <div className="text-center py-12">
-                <p className="text-gray-400">Recent papers will be displayed here.</p>
               </div>
-            </TabsContent>
+            )}
 
-            <TabsContent value="popular" className="mt-4">
-              {/* Popular papers would be displayed here */}
-              <div className="text-center py-12">
-                <p className="text-gray-400">Popular papers will be displayed here.</p>
-              </div>
-            </TabsContent>
+            {/* Content based on active tab */}
+            {activeTab === "all" && (
+              <div>
+                {filteredPapers.length === 0 ? (
+                  <div className="text-center py-12">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary-100 mb-4">
+                      <Search className="h-8 w-8 text-secondary-600" />
+                    </div>
+                    <h3 className="text-xl font-medium text-gray-900 mb-2">No results found</h3>
+                    <p className="text-gray-500 max-w-md mx-auto mb-4">
+                      We couldn't find any research papers matching your filters. Try adjusting your search criteria.
+                    </p>
+                    <button
+                      onClick={clearFilters}
+                      className="px-4 py-2 border border-[#F2F2F2] text-secondary-600 rounded-lg hover:bg-secondary-50 transition-colors"
+                    >
+                      Clear All Filters
+                    </button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {filteredPapers.map((paper) => (
+                      <div key={paper.id} className="bg-[#FCFCFC] border border-[#F4F2FD] p-6 rounded-lg flex flex-col h-full">
+                        {/* Paper Header */}
+                        <div className="mb-4">
+                          <div className="flex justify-between items-start mb-3">
+                            <span className={`inline-block px-2 py-1 rounded-md text-xs font-medium ${
+                              paper.type === "analytical" ? "bg-[#E5FFEF] text-[#00A63B] border-[#CCFFDE]" :
+                              paper.type === "simulation" ? "bg-[#FFE5E7] text-[#DB000E] border-[#FFCCCF]" :
+                              paper.type === "experimental" ? "bg-[#FDF2E8] text-[#EB801D] border-[#FBE5D0]" :
+                              "bg-gray-100 text-gray-600 border-gray-200"
+                            }`}>
+                              {paper.type.charAt(0).toUpperCase() + paper.type.slice(1)}
+                            </span>
+                            <span className="text-sm text-gray-500">{paper.date}</span>
+                          </div>
+                          <h3 className="text-lg font-semibold text-gray-900 mb-2">{paper.title}</h3>
+                          <p className="text-sm text-gray-500">by {paper.author}</p>
+                        </div>
 
-            <TabsContent value="trending" className="mt-4">
-              {/* Trending papers would be displayed here */}
-              <div className="text-center py-12">
-                <p className="text-gray-400">Trending papers will be displayed here.</p>
+                        {/* Paper Content */}
+                        <div className="flex-grow mb-4">
+                          <p className="text-gray-600 text-sm leading-relaxed mb-4">{paper.abstract}</p>
+                          <div className="flex flex-wrap gap-2">
+                            {paper.tags.map((tag, index) => (
+                              <button
+                                key={index}
+                                onClick={() => toggleTag(tag)}
+                                className="px-2 py-1 bg-white border border-[#F2F2F2] text-gray-600 text-xs rounded hover:bg-gray-50 transition-colors"
+                              >
+                                {tag}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Paper Footer */}
+                        <div className="flex justify-between items-center pt-4 border-t border-[#F2F2F2]">
+                          <div className="flex items-center text-sm text-gray-500">
+                            <Download className="h-4 w-4 mr-2" />
+                            {paper.downloads} downloads
+                          </div>
+                          <button className="px-4 py-2 text-secondary-600 hover:text-secondary-700 hover:bg-secondary-50 rounded-md transition-colors">
+                            Read More
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Pagination */}
+                {filteredPapers.length > 0 && (
+                  <div className="flex justify-center mt-8 space-x-2">
+                    <button className="px-4 py-2 border border-[#F2F2F2] text-secondary-600 rounded-lg hover:bg-secondary-50 transition-colors">
+                      Previous
+                    </button>
+                    <button className="px-4 py-2 border border-[#F2F2F2] text-secondary-600 rounded-lg hover:bg-secondary-50 transition-colors">
+                      Next
+                    </button>
+                  </div>
+                )}
               </div>
-            </TabsContent>
-          </Tabs>
+            )}
+
+            {activeTab === "recent" && (
+              <div className="text-center py-12">
+                <p className="text-gray-500">Recent papers will be displayed here.</p>
+              </div>
+            )}
+
+            {activeTab === "popular" && (
+              <div className="text-center py-12">
+                <p className="text-gray-500">Popular papers will be displayed here.</p>
+              </div>
+            )}
+
+            {activeTab === "trending" && (
+              <div className="text-center py-12">
+                <p className="text-gray-500">Trending papers will be displayed here.</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </DashboardShell>
+    </div>
   )
 }
