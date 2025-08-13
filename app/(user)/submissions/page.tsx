@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { Edit, Eye, MoreHorizontal, Plus, Calendar, Download, MessageSquare, Tag } from "lucide-react"
+import Link from "next/link"
 
 export default function SubmissionsPage() {
   const [activeTab, setActiveTab] = useState("all")
@@ -83,10 +84,10 @@ export default function SubmissionsPage() {
           <p className="text-sm text-gray-500">Manage and track your research submissions.</p>
         </div>
 
-        <button className="px-4 py-2 rounded-xl bg-primary text-white shadow-[inset_0_-2px_4px_rgba(255,255,255,0.35)] drop-shadow-[inset_0_2px_8px_rgba(33,0,93,0.2)] flex items-center gap-2 hover:opacity-80 transition-opacity duration-300">
+        <Link href="/submit" className="px-4 py-2 rounded-xl bg-primary text-white shadow-[inset_0_-2px_4px_rgba(255,255,255,0.35)] drop-shadow-[inset_0_2px_8px_rgba(33,0,93,0.2)] flex items-center gap-2 hover:opacity-80 transition-opacity duration-300">
           <Plus className="h-4 w-4" />
           <span>Submit Research</span>
-        </button>
+        </Link>
       </div>
 
       {/* Tabs */}

@@ -256,7 +256,7 @@ export default function DashboardPage() {
                 </button>
                 
                 {isFilterOpen && (
-                  <div className="absolute top-full left-0 mt-1 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10">
+                  <div className="absolute top-full left-0 mt-1 w-full bg-white border border-gray-200 rounded-lg shadow-lg z-10">
                     {filterOptions.map((option) => (
                       <button
                         key={option}
@@ -286,7 +286,7 @@ export default function DashboardPage() {
           {/* Research Paper Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
             {filteredPapers.map((paper, index) => (
-              <div key={index} className="p-3 px-6 bg-[#FCFCFC] border border-[#F4F2FD] max-w-[32rem] rounded-lg space-y-5">
+              <div key={index} className="p-3 px-6 bg-[#FCFCFC] border border-[#F4F2FD] rounded-lg space-y-5">
                 <div className="flex gap-2 items-center flex-wrap text-[10px]">
                   {paper.tags.map((tag, index) => (
                     <div key={index} className={`p-0.5 px-2 ${tag.style} border rounded-md`}>

@@ -52,7 +52,7 @@ export default function LandingPage() {
           className="md:text-xl font-bold transition ease-in-out duration-300 hover:opacity-80"
           aria-label="ResearchHub Home"
           >
-            Resource<span className="text-primary">HUB</span>
+            ARB Resource<span className="text-primary">HUB</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -74,13 +74,13 @@ export default function LandingPage() {
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center gap-4">
             <Link
-              href="/auth/login"
+              href="/auth?mode=login"
               className="px-4 py-2 rounded-xl text-primary border-[1.5px] border-gray-200 shadow-[inset_0_-2px_8px_rgba(0,0,0,0.08)] hover:opacity-80 transition-opacity duration-300"
             >
               Login
             </Link>
             <Link
-              href="/auth/login"
+              href="/auth?mode=signup"
               className="px-4 py-2 rounded-xl bg-primary text-white shadow-[inset_0_-2px_4px_rgba(255,255,255,0.35)] drop-shadow-[inset_0_2px_8px_rgba(33,0,93,0.2)] flex items-center gap-2 hover:opacity-80 transition-opacity duration-300"
             >
               <span>Sign Up</span>
@@ -112,28 +112,28 @@ export default function LandingPage() {
             <nav className="flex flex-col py-4 px-8">
               <Link 
                 href="/browse" 
-                className="py-3 hover:bg-gray-50 transition-colors hover:text-primary"
+                className="py-3 hover:text-primary opacity-60 transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Browse
               </Link>
               <Link 
                 href="/submit" 
-                className="py-3 hover:bg-gray-50 transition-colors hover:text-primary"
+                className="py-3 hover:text-primary opacity-60 transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Submit
               </Link>
               <Link 
                 href="/about" 
-                className="py-3 hover:bg-gray-50 transition-colors hover:text-primary"
+                className="py-3 hover:text-primary opacity-60 transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 About
               </Link>
               <Link 
                 href="/news" 
-                className="py-3 hover:bg-gray-50 transition-colors hover:text-primary"
+                className="py-3 hover:text-primary opacity-60 transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 News
@@ -141,14 +141,14 @@ export default function LandingPage() {
             </nav>
             <div className="border-t border-gray-100 px-6 py-4 space-y-4">
               <Link
-                href="/auth/login"
+                href="/auth?mode=login"
                 className="w-fit text-center px-4 py-2 rounded-xl text-primary border-[1.5px] border-gray-200 shadow-[inset_0_-2px_8px_rgba(0,0,0,0.08)] hover:opacity-80 transition-opacity duration-300"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Login
               </Link>
               <Link
-                href="/auth/login"
+                href="/auth?mode=signup"
                 className="w-fit text-center px-4 py-2 rounded-xl bg-primary text-white shadow-[inset_0_-2px_4px_rgba(255,255,255,0.35)] drop-shadow-[inset_0_2px_8px_rgba(33,0,93,0.2)] flex items-center justify-center gap-2 hover:opacity-80 transition-opacity duration-300"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -173,14 +173,14 @@ export default function LandingPage() {
           </p>
           <div className="flex flex-col md:flex-row items-center gap-4">
             <Link
-              href="/auth/login"
+              href="/auth?mode=login"
               className="px-4 py-1.5 rounded-xl bg-primary text-white shadow-[inset_0_-2px_4px_rgba(255,255,255,0.35)] drop-shadow-[inset_0_2px_8px_rgba(33,0,93,0.2)] flex items-center gap-2 hover:opacity-80 transition-opacity duration-300"
             >
               <span>Browse Research</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
-              href="/auth/login"
+              href="/auth?mode=signup"
               className="px-4 py-1.5 rounded-xl text-primary border-[1.5px] bg-white border-gray-200 shadow-[inset_0_-2px_8px_rgba(0,0,0,0.08)] hover:opacity-80 transition-opacity duration-300"
             >
               Submit your work
@@ -563,7 +563,7 @@ export default function LandingPage() {
         <div className="grid justify-start grid-cols-1 md:grid-cols-2 max-md:gap-9 px-8 md:px-20 py-10 md:py-20">
           <div className="space-y-3">
             <header className="md:text-lg font-bold">
-              Resource<span className="text-primary">HUB</span>
+              ARB Resource<span className="text-primary">HUB</span>
             </header>
             <div className="max-sm:text-sm max-w-[25rem] text-justify">
               A platform dedicated to showcasing exceptional research projects,

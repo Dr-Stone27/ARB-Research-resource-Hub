@@ -292,14 +292,14 @@ export default function BrowsePage() {
           <div className="w-full h-fit max-w-xs mt-4 flex items-center gap-2 bg-white border border-[#F2F2F2] rounded-lg ps-2">
             <Search className="h-5 w-5 text-gray-400" />
             <input
-              type="search"
-              placeholder="Search papers..."
+            type="search"
+            placeholder="Search papers..."
               className="w-full py-1.5 text-gray-900 placeholder-gray-500 outline-none focus:border-transparent"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
+      </div>
 
         <div className="grid gap-6 grid-cols-1 lg:grid-cols-4">
           {/* Filters Sidebar */}
@@ -450,7 +450,7 @@ export default function BrowsePage() {
                 </div>
               )}
             </div>
-          </div>
+        </div>
 
           {/* Main Content */}
           <div className="lg:col-span-3">
@@ -473,128 +473,128 @@ export default function BrowsePage() {
               </div>
             </div>
 
-            {/* Active Filters Display */}
-            {(selectedTypes.length > 0 ||
-              selectedAuthorTypes.length > 0 ||
-              selectedDepartments.length > 0 ||
-              selectedTags.length > 0 ||
-              timePeriod !== "all" ||
-              searchQuery) && (
+              {/* Active Filters Display */}
+              {(selectedTypes.length > 0 ||
+                selectedAuthorTypes.length > 0 ||
+                selectedDepartments.length > 0 ||
+                selectedTags.length > 0 ||
+                timePeriod !== "all" ||
+                searchQuery) && (
               <div className="mb-6 p-4 bg-[#FCFAFF] border border-[#F4F2FD] rounded-lg">
-                <div className="flex flex-wrap items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                   <span className="text-sm text-gray-600">Active filters:</span>
 
-                  {searchQuery && (
+                    {searchQuery && (
                     <span className="inline-flex items-center gap-1 px-3 py-1 bg-white border border-[#F2F2F2] text-gray-700 rounded-full text-sm">
-                      Search: {searchQuery}
+                        Search: {searchQuery}
                       <button
-                        onClick={() => setSearchQuery("")}
+                          onClick={() => setSearchQuery("")}
                         className="ml-1 p-1 hover:bg-gray-50 rounded-full"
-                      >
-                        <X className="h-3 w-3" />
+                        >
+                          <X className="h-3 w-3" />
                       </button>
                     </span>
-                  )}
+                    )}
 
-                  {selectedTypes.map((type) => (
+                    {selectedTypes.map((type) => (
                     <span key={type} className="inline-flex items-center gap-1 px-3 py-1 bg-white border border-[#F2F2F2] text-gray-700 rounded-full text-sm">
-                      Type: {type.charAt(0).toUpperCase() + type.slice(1)}
+                        Type: {type.charAt(0).toUpperCase() + type.slice(1)}
                       <button
-                        onClick={() => toggleResearchType(type)}
+                          onClick={() => toggleResearchType(type)}
                         className="ml-1 p-1 hover:bg-gray-50 rounded-full"
-                      >
-                        <X className="h-3 w-3" />
+                        >
+                          <X className="h-3 w-3" />
                       </button>
                     </span>
-                  ))}
+                    ))}
 
-                  {timePeriod !== "all" && (
+                    {timePeriod !== "all" && (
                     <span className="inline-flex items-center gap-1 px-3 py-1 bg-white border border-[#F2F2F2] text-gray-700 rounded-full text-sm">
-                      Time:{" "}
-                      {timePeriod === "7days"
-                        ? "Past 7 Days"
-                        : timePeriod === "30days"
-                          ? "Past Month"
-                          : timePeriod === "6months"
-                            ? "Past 6 Months"
-                            : "Past Year"}
+                        Time:{" "}
+                        {timePeriod === "7days"
+                          ? "Past 7 Days"
+                          : timePeriod === "30days"
+                            ? "Past Month"
+                            : timePeriod === "6months"
+                              ? "Past 6 Months"
+                              : "Past Year"}
                       <button
-                        onClick={() => setTimePeriod("all")}
+                          onClick={() => setTimePeriod("all")}
                         className="ml-1 p-1 hover:bg-gray-50 rounded-full"
-                      >
-                        <X className="h-3 w-3" />
+                        >
+                          <X className="h-3 w-3" />
                       </button>
                     </span>
-                  )}
+                    )}
 
-                  {selectedAuthorTypes.map((type) => (
+                    {selectedAuthorTypes.map((type) => (
                     <span key={type} className="inline-flex items-center gap-1 px-3 py-1 bg-white border border-[#F2F2F2] text-gray-700 rounded-full text-sm">
-                      Author: {type.charAt(0).toUpperCase() + type.slice(1)}
+                        Author: {type.charAt(0).toUpperCase() + type.slice(1)}
                       <button
-                        onClick={() => toggleAuthorType(type)}
+                          onClick={() => toggleAuthorType(type)}
                         className="ml-1 p-1 hover:bg-gray-50 rounded-full"
-                      >
-                        <X className="h-3 w-3" />
+                        >
+                          <X className="h-3 w-3" />
                       </button>
                     </span>
-                  ))}
+                    ))}
 
-                  {selectedDepartments.map((dept) => (
+                    {selectedDepartments.map((dept) => (
                     <span key={dept} className="inline-flex items-center gap-1 px-3 py-1 bg-white border border-[#F2F2F2] text-gray-700 rounded-full text-sm">
-                      Dept: {dept.charAt(0).toUpperCase() + dept.slice(1)}
+                        Dept: {dept.charAt(0).toUpperCase() + dept.slice(1)}
                       <button
-                        onClick={() => toggleDepartment(dept)}
+                          onClick={() => toggleDepartment(dept)}
                         className="ml-1 p-1 hover:bg-gray-50 rounded-full"
-                      >
-                        <X className="h-3 w-3" />
+                        >
+                          <X className="h-3 w-3" />
                       </button>
                     </span>
-                  ))}
+                    ))}
 
-                  {selectedTags.map((tag) => (
+                    {selectedTags.map((tag) => (
                     <span key={tag} className="inline-flex items-center gap-1 px-3 py-1 bg-white border border-[#F2F2F2] text-gray-700 rounded-full text-sm">
-                      {tag}
+                        {tag}
                       <button
                         onClick={() => toggleTag(tag)}
                         className="ml-1 p-1 hover:bg-gray-50 rounded-full"
                       >
-                        <X className="h-3 w-3" />
+                          <X className="h-3 w-3" />
                       </button>
                     </span>
-                  ))}
+                    ))}
 
                   <button
-                    onClick={clearFilters}
+                      onClick={clearFilters}
                     className="ml-auto text-xs text-secondary-600 hover:text-secondary-700 underline"
-                  >
-                    Clear All
+                    >
+                      Clear All
                   </button>
                 </div>
-              </div>
-            )}
+                </div>
+              )}
 
             {/* Content based on active tab */}
             {activeTab === "all" && (
               <div>
-                {filteredPapers.length === 0 ? (
-                  <div className="text-center py-12">
+              {filteredPapers.length === 0 ? (
+                <div className="text-center py-12">
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-secondary-100 mb-4">
                       <Search className="h-8 w-8 text-secondary-600" />
-                    </div>
+                  </div>
                     <h3 className="text-xl font-medium text-gray-900 mb-2">No results found</h3>
                     <p className="text-gray-500 max-w-md mx-auto mb-4">
-                      We couldn't find any research papers matching your filters. Try adjusting your search criteria.
-                    </p>
+                    We couldn't find any research papers matching your filters. Try adjusting your search criteria.
+                  </p>
                     <button
-                      onClick={clearFilters}
+                    onClick={clearFilters}
                       className="px-4 py-2 border border-[#F2F2F2] text-secondary-600 rounded-lg hover:bg-secondary-50 transition-colors"
-                    >
-                      Clear All Filters
+                  >
+                    Clear All Filters
                     </button>
-                  </div>
-                ) : (
+                </div>
+              ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {filteredPapers.map((paper) => (
+                  {filteredPapers.map((paper) => (
                       <div key={paper.id} className="bg-[#FCFCFC] border border-[#F4F2FD] p-6 rounded-lg flex flex-col h-full">
                         {/* Paper Header */}
                         <div className="mb-4">
@@ -605,9 +605,9 @@ export default function BrowsePage() {
                               paper.type === "experimental" ? "bg-[#FDF2E8] text-[#EB801D] border-[#FBE5D0]" :
                               "bg-gray-100 text-gray-600 border-gray-200"
                             }`}>
-                              {paper.type.charAt(0).toUpperCase() + paper.type.slice(1)}
+                            {paper.type.charAt(0).toUpperCase() + paper.type.slice(1)}
                             </span>
-                            <span className="text-sm text-gray-500">{paper.date}</span>
+                          <span className="text-sm text-gray-500">{paper.date}</span>
                           </div>
                           <h3 className="text-lg font-semibold text-gray-900 mb-2">{paper.title}</h3>
                           <p className="text-sm text-gray-500">by {paper.author}</p>
@@ -617,46 +617,46 @@ export default function BrowsePage() {
                         <div className="flex-grow mb-4">
                           <p className="text-gray-600 text-sm leading-relaxed mb-4">{paper.abstract}</p>
                           <div className="flex flex-wrap gap-2">
-                            {paper.tags.map((tag, index) => (
+                          {paper.tags.map((tag, index) => (
                               <button
                                 key={index}
                                 onClick={() => toggleTag(tag)}
                                 className="px-2 py-1 bg-white border border-[#F2F2F2] text-gray-600 text-xs rounded hover:bg-gray-50 transition-colors"
                               >
-                                {tag}
+                              {tag}
                               </button>
-                            ))}
+                          ))}
                           </div>
                         </div>
 
                         {/* Paper Footer */}
                         <div className="flex justify-between items-center pt-4 border-t border-[#F2F2F2]">
-                          <div className="flex items-center text-sm text-gray-500">
+                        <div className="flex items-center text-sm text-gray-500">
                             <Download className="h-4 w-4 mr-2" />
-                            {paper.downloads} downloads
+                          {paper.downloads} downloads
                           </div>
                           <button className="px-4 py-2 text-secondary-600 hover:text-secondary-700 hover:bg-secondary-50 rounded-md transition-colors">
                             Read More
                           </button>
                         </div>
                       </div>
-                    ))}
-                  </div>
-                )}
+                  ))}
+                </div>
+              )}
 
                 {/* Pagination */}
-                {filteredPapers.length > 0 && (
+              {filteredPapers.length > 0 && (
                   <div className="flex justify-center mt-8 space-x-2">
                     <button className="px-4 py-2 border border-[#F2F2F2] text-secondary-600 rounded-lg hover:bg-secondary-50 transition-colors">
-                      Previous
+                    Previous
                     </button>
                     <button className="px-4 py-2 border border-[#F2F2F2] text-secondary-600 rounded-lg hover:bg-secondary-50 transition-colors">
                       Next
                     </button>
                   </div>
                 )}
-              </div>
-            )}
+                </div>
+              )}
 
             {activeTab === "recent" && (
               <div className="text-center py-12">

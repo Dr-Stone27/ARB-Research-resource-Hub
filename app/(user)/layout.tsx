@@ -2,9 +2,9 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Plus_Jakarta_Sans, Lora, Schibsted_Grotesk } from "next/font/google"
 import "../globals.css"
-// import { Navbar } from "@/components/Navbar"
 import { ThemeProvider } from "@/components/theme-provider"
 import { SidebarNav } from "@/components/sidebar-nav"
+import UserHeader from "@/components/user-header"
 
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-plus-jakarta-sans" })
 const lora = Lora({ subsets: ["latin"], variable: "--font-lora" })
@@ -28,10 +28,7 @@ export default function RootLayout({
           <SidebarNav />
 
           <section className="lg:ml-64 relative">
-            {/* <Header /> */}
-            <header className="border-b border-gray-200 bg-white py-5 hidden lg:block sticky top-0 z-50">
-              Header
-            </header>
+            <UserHeader />
 
               <section className="py-16 lg:py-10 px-6 lg:px-4 lg:bg-gray-50">
                 {children}

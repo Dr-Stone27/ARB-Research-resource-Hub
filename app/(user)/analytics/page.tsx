@@ -120,8 +120,8 @@ export default function AnalyticsPage() {
                 </div>
                 <div className="h-[200px] w-full flex items-center justify-center bg-gray-50 rounded-lg border border-[#F2F2F2]">
                   <LineChart className="h-16 w-16 text-gray-400" />
-                  <p className="text-gray-500 ml-2">Chart visualization placeholder</p>
-                </div>
+                    <p className="text-gray-500 ml-2">Chart visualization placeholder</p>
+                  </div>
               </div>
               
               <div className="bg-[#FCFCFC] border border-[#F4F2FD] rounded-lg p-4 col-span-3">
@@ -129,19 +129,19 @@ export default function AnalyticsPage() {
                   <h3 className="text-lg font-semibold text-gray-900">Top Papers</h3>
                   <p className="text-sm text-gray-500">Your most viewed research papers</p>
                 </div>
-                <div className="space-y-4">
+                  <div className="space-y-4">
                   {topPapers.map((paper, index) => (
-                    <div key={index} className="flex items-center">
+                      <div key={index} className="flex items-center">
                       <div className="w-6 h-6 rounded-full bg-gradient-to-r from-secondary-600/30 to-primary-600/30 text-white flex items-center justify-center mr-3 text-sm font-medium">
-                        {index + 1}
-                      </div>
-                      <div className="flex-1 min-w-0">
+                          {index + 1}
+                        </div>
+                        <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-gray-700 truncate">{paper.title}</p>
-                        <p className="text-xs text-gray-500">{paper.views} views</p>
+                          <p className="text-xs text-gray-500">{paper.views} views</p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
               </div>
             </div>
 
@@ -154,8 +154,8 @@ export default function AnalyticsPage() {
                 </div>
                 <div className="h-[200px] w-full flex items-center justify-center bg-gray-50 rounded-lg border border-[#F2F2F2]">
                   <PieChart className="h-16 w-16 text-gray-400" />
-                  <p className="text-gray-500 ml-2">Chart visualization placeholder</p>
-                </div>
+                    <p className="text-gray-500 ml-2">Chart visualization placeholder</p>
+                  </div>
               </div>
               
               <div className="bg-[#FCFCFC] border border-[#F4F2FD] rounded-lg p-4">
@@ -165,8 +165,8 @@ export default function AnalyticsPage() {
                 </div>
                 <div className="h-[200px] w-full flex items-center justify-center bg-gray-50 rounded-lg border border-[#F2F2F2]">
                   <BarChart className="h-16 w-16 text-gray-400" />
-                  <p className="text-gray-500 ml-2">Chart visualization placeholder</p>
-                </div>
+                    <p className="text-gray-500 ml-2">Chart visualization placeholder</p>
+                  </div>
               </div>
             </div>
           </div>

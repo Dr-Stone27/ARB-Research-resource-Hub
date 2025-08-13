@@ -74,7 +74,7 @@ export function SidebarNav() {
   ]
 
   const handleLogout = () => {
-    router.push("/auth/login")
+    router.push("/")
   }
 
   useEffect(() => {
@@ -115,7 +115,7 @@ export function SidebarNav() {
           </button>
 
           <Link href="/dashboard" className="flex-1 text-center lg:flex lg:px-6 lg:text-left text-base font-bold">
-            Resource<span className="text-[#21005D]">HUB</span>
+            ARB Resource<span className="text-[#21005D]">HUB</span>
           </Link>
 
           <div className="hidden lg:block lg:mt-8 pt-4 px-6">

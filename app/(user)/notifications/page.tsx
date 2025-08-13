@@ -57,9 +57,9 @@ export default function NotificationsPage() {
   const filteredNotifications = notificationState.filter((notification) => {
     // First filter by tab
     const tabFiltered = 
-      activeTab === "all"
+    activeTab === "all"
         ? true
-        : activeTab === "unread"
+      : activeTab === "unread"
           ? !notification.read
           : notification.type === activeTab
 
@@ -158,7 +158,7 @@ export default function NotificationsPage() {
             Stay updated with the latest activity on your research papers and submissions.
           </p>
         </div>
-      </div>
+        </div>
 
       {/* Main Content */}
       <div className="bg-white border border-[#F3EDF7] rounded-lg p-6">
@@ -217,16 +217,16 @@ export default function NotificationsPage() {
 
         {/* Notifications Content */}
         <div className="space-y-4">
-          {filteredNotifications.length === 0 ? (
+              {filteredNotifications.length === 0 ? (
             <div className="bg-[#FCFAFF] border border-[#F4F2FD] rounded-lg p-12 text-center">
               <Bell className="h-12 w-12 mx-auto text-gray-400 mb-4" />
               <p className="text-gray-500">No notifications to display.</p>
             </div>
-          ) : (
-            <div className="space-y-4">
-              {filteredNotifications.map((notification) => (
+              ) : (
+                <div className="space-y-4">
+                  {filteredNotifications.map((notification) => (
                 <div
-                  key={notification.id}
+                      key={notification.id}
                   className={`bg-[#FCFCFC] border border-[#F4F2FD] rounded-lg p-4 ${
                     !notification.read ? "border-l-4 border-l-secondary-500" : ""
                   }`}
@@ -236,9 +236,9 @@ export default function NotificationsPage() {
                     <div className="flex items-center flex-1">
                       {getNotificationIcon(notification.type)}
                       <h3 className="text-lg font-semibold text-gray-900">{notification.title}</h3>
-                    </div>
+                        </div>
                     <div className="flex items-center text-sm text-gray-500 ml-4">
-                      <Clock className="h-3 w-3 mr-1" />
+                          <Clock className="h-3 w-3 mr-1" />
                       {formatDate(notification.date)}
                     </div>
                   </div>
@@ -260,19 +260,19 @@ export default function NotificationsPage() {
                     ) : (
                       <button
                         className="px-3 py-1.5 text-secondary-600 hover:text-secondary-700 hover:bg-secondary-50 rounded-md transition-colors"
-                        onClick={() => markAsRead(notification.id)}
-                      >
-                        Mark as read
+                            onClick={() => markAsRead(notification.id)}
+                          >
+                            Mark as read
                       </button>
-                    )}
+                        )}
                     <button className="px-3 py-1.5 border border-[#F2F2F2] text-gray-600 rounded-md hover:bg-gray-50 transition-colors">
-                      View Details
+                          View Details
                     </button>
                   </div>
                 </div>
               ))}
-            </div>
-          )}
+                </div>
+              )}
         </div>
       </div>
     </div>
