@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Image from "next/image";
-import { Eye, EyeOff, Mail, Lock, User, GraduationCap, School, BookOpen, Briefcase } from "lucide-react"
+import { Eye, EyeOff, Mail, Lock, User, School, Briefcase } from "lucide-react"
 
 export default function AuthPage() {
   const router = useRouter()
@@ -11,20 +11,31 @@ export default function AuthPage() {
   
   const [isLogin, setIsLogin] = useState(true)
   const [showPassword, setShowPassword] = useState(false)
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   
   // Form states
   const [loginForm, setLoginForm] = useState({
-    email: "",
+    email_or_matric: "",
     password: "",
   })
+
+  const loginButtonDisabled = loginForm.email_or_matric === "" || loginForm.password === ""
   
   const [signupForm, setSignupForm] = useState({
     name: "",
     email: "",
+    matric_or_faculty_id: "",
+    department: "",
     password: "",
     confirmPassword: "",
   })
+
+  const signUpButtonDisabled = signupForm.name === ""
+    || signupForm.email === ""
+    || signupForm.matric_or_faculty_id === ""
+    || signupForm.department === ""
+    || signupForm.password === ""
+    || signupForm.confirmPassword === ""
+    || signupForm.password !== signupForm.confirmPassword
 
   // Check URL params on mount
   useEffect(() => {
@@ -36,7 +47,6 @@ export default function AuthPage() {
     }
   }, [searchParams])
 
-  // Update URL when mode changes
   const handleModeChange = (newMode: boolean) => {
     setIsLogin(newMode)
     const mode = newMode ? "login" : "signup"
@@ -51,17 +61,8 @@ export default function AuthPage() {
 
   const handleSignupSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    if (signupForm.password !== signupForm.confirmPassword) {
-      alert("Passwords don't match!")
-      return
-    }
     console.log("Signup attempt:", signupForm)
     // Handle signup logic here
-  }
-
-  const handleGoogleAuth = () => {
-    console.log("Google authentication")
-    // Handle Google auth logic here
   }
 
   return (
@@ -116,44 +117,24 @@ export default function AuthPage() {
             </div>
           </div>
 
-          {/* Google Sign Up Button */}
-          <div className="mb-6">
-            <button
-              onClick={handleGoogleAuth}
-              className="w-full flex items-center justify-center gap-3 py-2 px-4 border border-[#F2F2F2] rounded-lg text-xs text-gray-500 font-medium hover:bg-gray-50 transition-colors shadow-[inset_0_-2px_4px_rgba(0,0,0,0.04)]"
-            >
-              <span className="text-lg font-bold text-gray-600">G</span>
-              Continue with Google
-            </button>
-          </div>
-
-          {/* Divider */}
-          <div className="relative mb-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-[#F2F2F2]" />
-            </div>
-            <div className="relative flex justify-center text-xs">
-              <span className="px-2 bg-white text-gray-500">or</span>
-            </div>
-          </div>
-
           {/* Login Form */}
           {isLogin && (
             <form onSubmit={handleLoginSubmit} className="space-y-4">
               <div>
                 <label htmlFor="login-email" className="block text-sm text-gray-500 font-medium mb-2">
-                  Email
+                  Email/Matric Number
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <input
                     id="login-email"
-                    type="email"
+                    type="text"
+                    autoComplete="on"
                     required
-                    value={loginForm.email}
-                    onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
+                    value={loginForm.email_or_matric}
+                    onChange={(e) => setLoginForm({ ...loginForm, email_or_matric: e.target.value })}
                     className="w-full pl-10 pr-4 py-2 border border-[#F2F2F2] rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-transparent text-sm"
-                    placeholder="Enter your email"
+                    placeholder="Email/Matric Number"
                   />
                 </div>
               </div>
@@ -171,7 +152,7 @@ export default function AuthPage() {
                     value={loginForm.password}
                     onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
                     className="w-full pl-10 pr-12 py-2 border border-[#F2F2F2] rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-transparent text-sm"
-                    placeholder="Enter your password"
+                    placeholder="********"
                   />
                   <button
                     type="button"
@@ -195,7 +176,8 @@ export default function AuthPage() {
 
               <button
                 type="submit"
-                className="w-full bg-secondary-600 hover:bg-secondary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm"
+                disabled={loginButtonDisabled}
+                className="w-full bg-secondary-600 hover:bg-secondary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Login
               </button>
@@ -207,7 +189,7 @@ export default function AuthPage() {
             <form onSubmit={handleSignupSubmit} className="space-y-4">
               <div>
                 <label htmlFor="signup-name" className="block text-sm text-gray-500 font-medium mb-2">
-                  Full Name
+                  Name
                 </label>
                 <div className="relative">
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -242,6 +224,42 @@ export default function AuthPage() {
               </div>
 
               <div>
+                <label htmlFor="signup-email" className="block text-sm text-gray-500 font-medium mb-2">
+                  Matric/Faculty ID
+                </label>
+                <div className="relative">
+                  <School className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <input
+                    id="signup-email"
+                    type="number"
+                    required
+                    value={signupForm.matric_or_faculty_id}
+                    onChange={(e) => setSignupForm({ ...signupForm, matric_or_faculty_id: e.target.value })}
+                    className="w-full pl-10 pr-4 py-2 border border-[#F2F2F2] rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-transparent text-sm [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [appearance:textfield]"
+                    placeholder="Enter your matric number/faculty ID"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="department" className="block text-sm text-gray-500 font-medium mb-2">
+                  Department
+                </label>
+                <div className="relative">
+                  <Briefcase className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                  <input
+                    id="department"
+                    type="text"
+                    required
+                    value={signupForm.department}
+                    onChange={(e) => setSignupForm({ ...signupForm, department: e.target.value })}
+                    className="w-full pl-10 pr-4 py-2 border border-[#F2F2F2] rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-transparent text-sm"
+                    placeholder="Department"
+                  />
+                </div>
+              </div>
+
+              <div>
                 <label htmlFor="signup-password" className="block text-sm text-gray-500 font-medium mb-2">
                   Password
                 </label>
@@ -249,20 +267,13 @@ export default function AuthPage() {
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <input
                     id="signup-password"
-                    type={showPassword ? "text" : "password"}
+                    type="text"
                     required
                     value={signupForm.password}
                     onChange={(e) => setSignupForm({ ...signupForm, password: e.target.value })}
                     className="w-full pl-10 pr-12 py-2 border border-[#F2F2F2] rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-transparent text-sm"
                     placeholder="Create a password"
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </button>
                 </div>
               </div>
 
@@ -274,20 +285,13 @@ export default function AuthPage() {
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                   <input
                     id="signup-confirm-password"
-                    type={showConfirmPassword ? "text" : "password"}
+                    type="text"
                     required
                     value={signupForm.confirmPassword}
                     onChange={(e) => setSignupForm({ ...signupForm, confirmPassword: e.target.value })}
                     className="w-full pl-10 pr-12 py-2 border border-[#F2F2F2] rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-secondary-500 focus:border-transparent text-sm"
                     placeholder="Confirm your password"
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
-                    {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </button>
                 </div>
               </div>
 
@@ -311,7 +315,8 @@ export default function AuthPage() {
 
               <button
                 type="submit"
-                className="w-full bg-secondary-600 hover:bg-secondary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm"
+                disabled={signUpButtonDisabled}
+                className="w-full bg-secondary-600 hover:bg-secondary-700 text-white font-medium py-2 px-4 rounded-lg transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Create Account
               </button>
